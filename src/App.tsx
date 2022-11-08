@@ -26,7 +26,7 @@ const Player: Component<{
 }> = (props) => {
   return (
     <div class={`flex items-center gap-3 ${props.class} ${props.align == "right" ? "flex-row-reverse" : ""} `}>
-      <Flag civ={props.civ} class={`rounded-sm object-cover ${props.size == "compact" ? "h-5 w-9" : "h-9 w-12"}`} />
+      <Flag civ={props.civ} class={`rounded-sm object-cover ${props.size == "compact" ? "h-5 w-9" : "h-9 w-16"}`} />
       {props.player.rank && <Badge rank={props.player.rank} class={props.size == "compact" ? "h-5" : "h-9"} />}
       <div
         class={`
@@ -62,8 +62,6 @@ const Player: Component<{
 let interval;
 const App: Component = () => {
   const [profileId, setProfileId] = createSignal<string>();
-  //     4509500 || 2347873 || 6943917 || 219493 || 1445943 || 6946065 || 7090781 || 196366 || 6759422 || 1270139
-
   const [currentGame, { refetch }] = createResource(profileId, getLastGame);
 
   const game = () => (currentGame.loading ? currentGame.latest : currentGame());

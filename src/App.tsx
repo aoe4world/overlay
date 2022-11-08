@@ -93,7 +93,7 @@ const App: Component = () => {
           </div>
         )}
 
-        {!currentGame.error && (
+        {currentGame.error && profileId() && (
           <div class="flex-none p-4">
             <div class="font-bold text-white text-md">Error while loading last match</div>
             <span class="text-sm">{currentGame.error?.message}</span>

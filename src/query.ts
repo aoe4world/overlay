@@ -139,7 +139,8 @@ export async function getLastGame(
       kind: mode.replace("_", " "),
     };
   } catch (e) {
-    return refetching ? value : e.message;
+    if (refetching) return value;
+    else throw e;
   }
 }
 

@@ -4,12 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <title>Solid App</title>
+    <title>AoE4 World Overlay</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root" class="relative z-20"></div>
 
     <script src="/src/index.tsx" type="module"></script>
+    <!-- <iframe
+      src="https://player.twitch.tv/?channel=thesniper_aoe&parent=localhost"
+      height="100%"
+      width="100%"
+      allowfullscreen
+      class="w-screen h-screen absolute inset-0 z-10 pointer-events-none"
+    >
+    </iframe> -->
   </body>
 </html>

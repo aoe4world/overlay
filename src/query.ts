@@ -82,6 +82,7 @@ const mapPlayer =
   (mode_id: string) =>
   (player: ApiPlayer): Player => {
     const mode: ApiMode = player.modes?.[mode_id];
+    const rank_level = mode?.rank_level ?? "unranked";
     return {
       name: player.name,
       civilization: CIVILIZATIONS[player.civilization] ?? {
@@ -90,13 +91,7 @@ const mapPlayer =
         flag: undefined,
       },
       mode_stats: mode,
-      rank: mode
-        ? mode_id === "rm_solo"
-          ? `solo_${mode.rank_level}`
-          : mode_id === "rm_team"
-          ? `team_${mode.rank_level}`
-          : undefined
-        : undefined,
+      rank: mode_id === "rm_solo" ? `solo_${rank_level}` : mode_id === "rm_team" ? `team_${rank_level}` : undefined,
       result: player.result,
     };
   };

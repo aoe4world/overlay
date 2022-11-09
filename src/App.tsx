@@ -43,21 +43,29 @@ const Player: Component<{
         >
           {props.player.name}
         </h1>
-        {props.player.mode_stats ? (
-          <div class={`flex gap-2 text-sm ${props.size == "compact" ? "opacity-70" : ""} `}>
-            <span>#{props.player.mode_stats.rank}</span>
-            <span>{props.player.mode_stats.rating}</span>
-            {props.size != "compact" && (
-              <>
-                <span>{props.player.mode_stats.win_rate}%</span>
-                <span class="text-green-600">{props.player.mode_stats.wins_count}W</span>
-                <span class="text-red-600">{props.player.mode_stats.losses_count}L</span>
-              </>
-            )}
-          </div>
-        ) : (
-          <span class="text-sm text-white/50">No rank found</span>
-        )}
+        <div
+          class={`flex gap-2 text-sm ${props.size == "compact" ? "opacity-70" : ""} ${
+            props.align == "right" ? "justify-end" : ""
+          } `}
+        >
+          {props.player.mode_stats ? (
+            <>
+              <span>#{props.player.mode_stats.rank}</span>
+              <span>{props.player.mode_stats.rating}</span>
+              {props.size != "compact" && (
+                <>
+                  <span>{props.player.mode_stats.win_rate}%</span>
+                  <span class="text-green-600">{props.player.mode_stats.wins_count}W</span>
+                  <span class="text-red-600">{props.player.mode_stats.losses_count}L</span>
+                </>
+              )}
+            </>
+          ) : props.player.rank?.endsWith("unranked") ? (
+            <span class="text-sm text-white/50">Unranked</span>
+          ) : (
+            <span class="text-sm text-white/50">No stats found</span>
+          )}
+        </div>
       </div>
     </div>
   );

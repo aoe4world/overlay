@@ -81,7 +81,7 @@ type Modes = "rm_solo" | "rm_team";
 const mapPlayer =
   (mode_id: string) =>
   (player: ApiPlayer): Player => {
-    const mode: ApiMode = player.modes[mode_id];
+    const mode: ApiMode = player.modes?.[mode_id];
     return {
       name: player.name,
       civilization: CIVILIZATIONS[player.civilization] ?? {
@@ -90,12 +90,13 @@ const mapPlayer =
         flag: undefined,
       },
       mode_stats: mode,
-      rank:
-        mode_id === "rm_solo"
+      rank: mode
+        ? mode_id === "rm_solo"
           ? `solo_${mode.rank_level}`
           : mode_id === "rm_team"
           ? `team_${mode.rank_level}`
-          : undefined,
+          : undefined
+        : undefined,
       result: player.result,
     };
   };
@@ -103,7 +104,7 @@ const mapPlayer =
 export type Player = {
   name: string;
   civilization: Civilization;
-  mode_stats: ApiMode;
+  mode_stats?: ApiMode;
   rank?: string;
   result?: "win" | "loss";
 };
@@ -136,7 +137,7 @@ export async function getLastGame(
       team: team.map(mapPlayer(mode)),
       opponents: opponents.map(mapPlayer(mode)),
       map: response.map,
-      kind: mode.replace("_", " "),
+      kind: response.kind.replace("_", " "),
     };
   } catch (e) {
     if (refetching) return value;

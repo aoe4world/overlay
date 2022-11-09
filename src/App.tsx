@@ -27,7 +27,7 @@ const Player: Component<{
   return (
     <div class={`flex items-center gap-3 ${props.class} ${props.align == "right" ? "flex-row-reverse" : ""} `}>
       <Flag civ={props.civ} class={`rounded-sm object-cover ${props.size == "compact" ? "h-5 w-9" : "h-9 w-16"}`} />
-      {props.player.rank && <Badge rank={props.player.rank} class={props.size == "compact" ? "h-5" : "h-9"} />}
+      {props.player?.rank && <Badge rank={props.player.rank} class={props.size == "compact" ? "h-5" : "h-9"} />}
       <div
         class={`
         gap-1 justify-between
@@ -43,17 +43,21 @@ const Player: Component<{
         >
           {props.player.name}
         </h1>
-        <div class={`flex gap-2 text-sm ${props.size == "compact" ? "opacity-70" : ""} `}>
-          <span>#{props.player.mode_stats.rank}</span>
-          <span>{props.player.mode_stats.rating}</span>
-          {props.size != "compact" && (
-            <>
-              <span>{props.player.mode_stats.win_rate}%</span>
-              <span class="text-green-600">{props.player.mode_stats.wins_count}W</span>
-              <span class="text-red-600">{props.player.mode_stats.losses_count}L</span>
-            </>
-          )}
-        </div>
+        {props.player.mode_stats ? (
+          <div class={`flex gap-2 text-sm ${props.size == "compact" ? "opacity-70" : ""} `}>
+            <span>#{props.player.mode_stats.rank}</span>
+            <span>{props.player.mode_stats.rating}</span>
+            {props.size != "compact" && (
+              <>
+                <span>{props.player.mode_stats.win_rate}%</span>
+                <span class="text-green-600">{props.player.mode_stats.wins_count}W</span>
+                <span class="text-red-600">{props.player.mode_stats.losses_count}L</span>
+              </>
+            )}
+          </div>
+        ) : (
+          <span class="text-sm text-white/50">No rank found</span>
+        )}
       </div>
     </div>
   );

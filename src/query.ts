@@ -9,7 +9,7 @@ export type Civilization = {
 const CIVILIZATIONS: Record<string, Civilization> = {
   abbasid_dynasty: {
     name: "Abbasid Dynasty",
-    color: "#343638",
+    color: "#3B3E41",
     flag: FLAGS.ab,
   },
 

@@ -26,7 +26,7 @@ const Player: Component<{
 }> = (props) => {
   return (
     <div class={`flex items-center gap-3 ${props.class} ${props.align == "right" ? "flex-row-reverse" : ""} `}>
-      <Flag civ={props.civ} class={`rounded-sm object-cover ${props.size == "compact" ? "h-5 w-9" : "h-9 w-16"}`} />
+      <Flag civ={props.civ} class={`rounded-sm object-cover ${props.size == "compact" ? "h-5 w-9" : "h-11 w-17"}`} />
       {props.player?.rank && <Badge rank={props.player.rank} class={props.size == "compact" ? "h-5" : "h-9"} />}
       <div
         class={`
@@ -37,14 +37,14 @@ const Player: Component<{
           `}
       >
         <h1
-          class={`font-bold text-sm whitespace-nowrap ${
-            props.player.result == "loss" ? " text-red-600 " : props.player.result == "win" ? " text-green-600" : ""
+          class={`font-bold text-md whitespace-nowrap ${
+            props.player.result == "loss" ? " text-red-500 " : props.player.result == "win" ? " text-green-500" : ""
           }`}
         >
           {props.player.name}
         </h1>
         <div
-          class={`flex gap-2 text-sm ${props.size == "compact" ? "opacity-70" : ""} ${
+          class={`flex gap-2 text-md ${props.size == "compact" ? "opacity-80" : ""} ${
             props.align == "right" ? "justify-end" : ""
           } `}
         >
@@ -55,15 +55,15 @@ const Player: Component<{
               {props.size != "compact" && (
                 <>
                   <span>{props.player.mode_stats.win_rate}%</span>
-                  <span class="text-green-600">{props.player.mode_stats.wins_count}W</span>
-                  <span class="text-red-600">{props.player.mode_stats.losses_count}L</span>
+                  <span class="text-green-500">{props.player.mode_stats.wins_count}W</span>
+                  <span class="text-red-500">{props.player.mode_stats.losses_count}L</span>
                 </>
               )}
             </>
           ) : props.player.rank?.endsWith("unranked") ? (
-            <span class="text-sm text-white/50">Unranked</span>
+            <span class="text-md text-white/50">Unranked</span>
           ) : (
-            <span class="text-sm text-white/50">No stats found</span>
+            <span class="text-md text-white/50">No stats found</span>
           )}
         </div>
       </div>
@@ -90,11 +90,11 @@ const App: Component = () => {
 
   return (
     <div class="flex items-center flex-col" style="text-shadow: 0px 1px 0 1px black;">
-      <div class="from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-6 min-w-[700px] text-white inline-flex items-center p-2 relative">
+      <div class="from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-6 min-w-[800px] text-white inline-flex items-center p-2 relative">
         {!profileId() && (
           <div class="flex-none p-4">
             <div class="font-bold text-white text-md">No profile selected</div>
-            <span class="text-sm">
+            <span class="text-md">
               Make sure the url ends with{" "}
               <code class="text-gray-100">
                 ?profileId=<span class="text-blue-300">your profile id</span>
@@ -106,22 +106,22 @@ const App: Component = () => {
         {currentGame.error && profileId() && (
           <div class="flex-none p-4">
             <div class="font-bold text-white text-md">Error while loading last match</div>
-            <span class="text-sm">{currentGame.error?.message}</span>
+            <span class="text-md">{currentGame.error?.message}</span>
           </div>
         )}
 
-        <div class="basis-1/2 flex flex-col gap-3">
+        <div class="basis-1/2 flex flex-col gap-2">
           <For each={game()?.team}>
             {(player) => (
               <Player player={player} civ={player.civilization} align="left" size={teamGame() ? "compact" : null} />
             )}
           </For>
         </div>
-        <div class="text-center basis-36 flex flex-col self-start	 gap-1 px-4 whitespace-nowrap">
-          <p class="text-xs font-bold">{currentGame()?.map}</p>
-          <p class="text-xs uppercase text-white/80">{currentGame()?.kind}</p>
+        <div class="text-center basis-36 flex flex-col self-start	gap-1 px-4 whitespace-nowrap">
+          <p class="text-sm font-bold">{currentGame()?.map}</p>
+          <p class="text-sm uppercase text-white/80">{currentGame()?.kind}</p>
         </div>
-        <div class="basis-1/2 flex flex-col gap-3">
+        <div class="basis-1/2 flex flex-col gap-2">
           <For each={game()?.opponents}>
             {(player) => (
               <Player player={player} civ={player.civilization} align="right" size={teamGame() ? "compact" : null} />

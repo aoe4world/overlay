@@ -65,23 +65,12 @@ const CIVILIZATIONS: Record<string, Civilization> = {
   },
 };
 
-const KIND_TO_MODE = {
-  rm_1v1: "rm_solo",
-  rm_2v2: "rm_team",
-  rm_3v3: "rm_team",
-  rm_4v4: "rm_team",
-  qm_1v1: "qm_1v1",
-  qm_2v2: "qm_2v2",
-  qm_3v3: "qm_3v3",
-  qm_4v4: "qm_4v4",
-};
-
 type Modes = "rm_solo" | "rm_team";
 
 const mapPlayer =
-  (mode_id: string) =>
+  (leaderboard: string) =>
   (player: ApiPlayer): Player => {
-    const mode: ApiMode = player.modes?.[mode_id];
+    const mode: ApiMode = player.modes?.[leaderboard];
     const rank_level = mode?.rank_level ?? "unranked";
     return {
       name: player.name,
@@ -91,7 +80,8 @@ const mapPlayer =
         flag: undefined,
       },
       mode_stats: mode,
-      rank: mode_id === "rm_solo" ? `solo_${rank_level}` : mode_id === "rm_team" ? `team_${rank_level}` : undefined,
+      rank:
+        leaderboard === "rm_solo" ? `solo_${rank_level}` : leaderboard === "rm_team" ? `team_${rank_level}` : undefined,
       result: player.result,
     };
   };
@@ -111,6 +101,8 @@ export type CurrentGame = {
   opponents: Player[];
   map: string;
   kind: string;
+  ongoing: boolean;
+  recentlyFinished: boolean;
 };
 
 export async function getLastGame(
@@ -118,21 +110,25 @@ export async function getLastGame(
   { value, refetching }: { value: CurrentGame; refetching: boolean }
 ): Promise<CurrentGame> {
   try {
-    const response: ApiGame = await fetch(`https://aoe4world.com/api/v0/players/${profile_id}/games/last`).then((r) =>
-      r.json()
-    );
+    const response: ApiGame = await fetch(
+      `https://aoe4world.com/api/v0/players/${profile_id}/games/last?includeAlts=true`
+    ).then((r) => r.json());
     if (refetching && value.id == response.game_id && value.duration == response.duration) return value;
 
-    const team = response.teams.find((team) => team.some((player) => player.profile_id === +profile_id)) || [];
-    const opponents = response.teams.filter((t) => t !== team).flat();
-    const mode = KIND_TO_MODE[response.kind];
+    const { map, ongoing, duration, just_finished, teams, leaderboard } = response;
+
+    const team =
+      teams.find((team) => team.some((player) => response.filters.profile_ids.includes(player.profile_id))) || [];
+    const opponents = teams.filter((t) => t !== team).flat();
     return {
       id: response.game_id,
-      duration: response.duration,
-      team: team.map(mapPlayer(mode)),
-      opponents: opponents.map(mapPlayer(mode)),
-      map: response.map,
+      team: team.map(mapPlayer(leaderboard)),
+      opponents: opponents.map(mapPlayer(leaderboard)),
       kind: response.kind.replace("_", " "),
+      duration,
+      map,
+      ongoing,
+      recentlyFinished: just_finished,
     };
   } catch (e) {
     if (refetching) return value;
@@ -141,14 +137,19 @@ export async function getLastGame(
 }
 
 interface ApiGame {
+  filters: {
+    profile_ids: number[];
+  };
   game_id: number;
   started_at: string;
   duration?: any;
   map: string;
   kind: string;
+  leaderboard: string;
   server: string;
   average_rating?: any;
   ongoing: boolean;
+  just_finished: boolean;
   teams: ApiPlayer[][];
 }
 

@@ -1,5 +1,22 @@
-import { Component, ComponentProps, createResource, createSignal, For, onCleanup, onMount, splitProps } from "solid-js";
+import {
+  Component,
+  ComponentProps,
+  createEffect,
+  createResource,
+  createSignal,
+  For,
+  on,
+  onCleanup,
+  onMount,
+  splitProps,
+} from "solid-js";
 import { Civilization, getLastGame, Player as TeamPlayer } from "./query";
+
+// seconds
+const CONFIG = {
+  HIDE_GAME_AFTER: 20,
+  SYNC_EVERY: 15,
+};
 
 const Flag: Component<ComponentProps<"img"> & { civ: Civilization }> = (props) => {
   const [local, rest] = splitProps(props, ["civ", "class"]);
@@ -7,7 +24,7 @@ const Flag: Component<ComponentProps<"img"> & { civ: Civilization }> = (props) =
     <img
       src={local.civ.flag}
       style={{ "outline-color": local.civ.color }}
-      class={classes(local.class, "outline outline-2")}
+      class={classes(local.class, "outline outline-1")}
       {...rest}
     />
   );
@@ -27,13 +44,13 @@ const Player: Component<{
   const compact = () => props.size === "compact";
   const rightAligned = () => props.align === "right";
   return (
-    <div class={classes("flex items-center gap-4", rightAligned() && "flex-row-reverse")}>
+    <div class={classes("flex items-center gap-3", rightAligned() && "flex-row-reverse")}>
       <Flag
         civ={props.civ}
-        class={classes("rounded-sm object-cover", compact() ? "h-5 w-9 rounded-xs" : "h-10 w-17")}
+        class={classes("rounded-sm object-cover", compact() ? "h-5 w-9 rounded-xs" : "h-10 w-17 scale-[0.9]")}
       />
       {props.player?.rank && (
-        <Badge rank={props.player.rank} class={classes("rounded-sm scale-125", compact() ? "h-5" : "h-9")} />
+        <Badge rank={props.player.rank} class={classes("rounded-sm scale-[1.2]", compact() ? "h-5" : "h-9")} />
       )}
       <div
         class={classes(
@@ -82,43 +99,71 @@ const Player: Component<{
   );
 };
 
-let interval;
+let sync;
+let scheduledHide;
 const App: Component = () => {
   const options = new URLSearchParams(window.location.search);
   const [profileId, setProfileId] = createSignal(options.get("profileId")?.toString()?.split("-")[0]);
   const [theme, setTheme] = createSignal<"top" | "floating">((options.get("theme") as any) ?? "floating");
   const [currentGame, { refetch }] = createResource(profileId, getLastGame);
+  const [visible, setVisible] = createSignal(!!profileId());
   const game = () => (currentGame.loading ? currentGame.latest : currentGame());
   const teamGame = () => game()?.team.length > 1 || game()?.opponents.length > 1;
 
+  const toggle = (show: boolean) => {
+    setVisible(show);
+    window.clearTimeout(scheduledHide);
+  };
+
   onMount(() => {
-    interval = setInterval(() => refetch(), 1000 * 15);
+    sync = setInterval(() => refetch(), 1000 * CONFIG.SYNC_EVERY);
   });
-  onCleanup(() => clearInterval(interval));
+
+  onCleanup(() => {
+    clearInterval(sync);
+    clearTimeout(scheduledHide);
+  });
+
+  createEffect(
+    on(game, () => {
+      if (visible() && game()?.ongoing === false)
+        scheduledHide = window.setTimeout(() => toggle(false), 1000 * CONFIG.HIDE_GAME_AFTER);
+      else if (!visible() && game()?.ongoing) toggle(true);
+    })
+  );
 
   return (
     <div class="flex items-center flex-col" style="text-shadow: 0px 1px 0 1px black;">
+      {!profileId() && (
+        <div class="bg-red-900 p-6 text-sm m-4 rounded-md max-w-[800px]">
+          <div class="font-bold text-white text-md mb-4">No profile selected</div>
+          <span class="text-white">
+            Make sure the url ends with{" "}
+            <code class="text-gray-100">
+              ?profileId=<span class="text-blue-300">your profile id</span>
+            </code>
+          </span>
+        </div>
+      )}
+      {currentGame.error && profileId() && (
+        <div class="bg-red-900 p-6 text-sm m-4 rounded-md max-w-[800px]">
+          <div class="font-bold text-white text-md">Error while loading last match</div>
+          <span class="text-white">{currentGame.error?.message}</span>
+        </div>
+      )}
+
       <div
-        class="from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 min-w-[800px] text-white inline-flex items-center relative p-2"
+        class={classes(
+          "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-[800px] text-white inline-flex items-center relative p-1.5",
+          "duration-700 fade-in fade-out",
+          theme() == "top" && "slide-in-from-top slide-out-to-top-20",
+          visible() ? "animate-in" : "animate-out"
+        )}
+        onanimationend={(e) => {
+          e.target.classList.contains("animate-out") && e.target.classList.add("hidden");
+        }}
         style={themes[theme()]}
       >
-        {!profileId() && (
-          <div class="flex-none p-4">
-            <div class="font-bold text-white text-md">No profile selected</div>
-            <span class="text-md">
-              Make sure the url ends with{" "}
-              <code class="text-gray-100">
-                ?profileId=<span class="text-blue-300">your profile id</span>
-              </code>
-            </span>
-          </div>
-        )}
-        {currentGame.error && profileId() && (
-          <div class="flex-none p-4">
-            <div class="font-bold text-white text-md">Error while loading last match</div>
-            <span class="text-md">{currentGame.error?.message}</span>
-          </div>
-        )}
         <div class="basis-1/2 flex flex-col gap-2">
           <For each={game()?.team}>
             {(player) => (
@@ -144,8 +189,7 @@ const App: Component = () => {
 
 const themes = {
   top: `
-    background-image: radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 25%, rgba(0,0,0,0.9)
-    100%); background-size: auto 200%; background-position: center 128px;
+    background-image: radial-gradient(circle at bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 5%, rgba(0,0,0,0.7) 25%, rgba(0,0,0,0.9) 80%);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   `,

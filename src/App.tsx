@@ -11,6 +11,7 @@ import {
   splitProps,
 } from "solid-js";
 import { Civilization, getLastGame, Player as TeamPlayer } from "./query";
+import { BADGES } from "./assets";
 
 // seconds
 const CONFIG = {
@@ -31,7 +32,7 @@ const Flag: Component<ComponentProps<"img"> & { civ: Civilization }> = (props) =
 };
 
 const Badge: Component<{ rank: string; class?: string }> = (props) => (
-  <img src={`/badges/s3/${props.rank}.svg`} class={props.class} />
+  <img src={BADGES[`./badges/s3/${props.rank}.svg`]} class={props.class} />
 );
 
 const Player: Component<{

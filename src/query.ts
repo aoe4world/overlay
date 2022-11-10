@@ -111,7 +111,7 @@ export async function getLastGame(
 ): Promise<CurrentGame> {
   try {
     const response: ApiGame = await fetch(
-      `https://aoe4world.com/api/v0/players/${profile_id}/games/last?includeAlts=true`
+      `https://aoe4world.com/api/v0/players/${profile_id}/games/last?include_alts=true`
     ).then((r) => r.json());
     if (refetching && value.id == response.game_id && value.duration == response.duration) return value;
 

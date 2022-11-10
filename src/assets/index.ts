@@ -10,3 +10,5 @@ import ot from "./flags/ot.png";
 import ru from "./flags/ru.png";
 
 export const FLAGS = { ab, ch, de, en, fr, hr, ma, mo, ot, ru };
+
+export const BADGES = import.meta.glob('./badges/s3/*.svg', { eager: true, as: 'url' });

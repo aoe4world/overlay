@@ -14,7 +14,8 @@
     "tailwindcss": "^3.0.23",
     "tailwindcss-animate": "^1.0.5",
     "typescript": "^4.6.3",
-    "vite": "^2.8.6",
+    "vite": "^3.2.3",
+    "vite-plugin-pwa": "^0.13.3",
     "vite-plugin-solid": "^2.2.6"
   },
   "dependencies": {

@@ -11,6 +11,7 @@ import {
   splitProps,
 } from "solid-js";
 import { Civilization, getLastGame, Player as TeamPlayer } from "./query";
+import { Trivia } from "./Trivia";
 
 // seconds
 const CONFIG = {
@@ -18,7 +19,7 @@ const CONFIG = {
   SYNC_EVERY: 15,
 };
 
-const Flag: Component<ComponentProps<"img"> & { civ: Civilization }> = (props) => {
+export const Flag: Component<ComponentProps<"img"> & { civ: Civilization }> = (props) => {
   const [local, rest] = splitProps(props, ["civ", "class"]);
   return (
     <img
@@ -106,7 +107,7 @@ const App: Component = () => {
   const [profileId, setProfileId] = createSignal(options.get("profileId")?.toString()?.split("-")[0]);
   const [theme, setTheme] = createSignal<"top" | "floating">((options.get("theme") as any) ?? "floating");
   const [currentGame, { refetch }] = createResource(profileId, getLastGame);
-  const [visible, setVisible] = createSignal(!!profileId());
+  const [visible, setVisible] = createSignal(false);
   const game = () => (currentGame.loading ? currentGame.latest : currentGame());
   const teamGame = () => game()?.team.length > 1 || game()?.opponents.length > 1;
 
@@ -133,9 +134,9 @@ const App: Component = () => {
   );
 
   return (
-    <div class="flex items-center flex-col" style="text-shadow: 0px 1px 0 1px black;">
+    <div class="flex items-center flex-col w-[800px] mx-auto" style="text-shadow: 0px 1px 0 1px black;">
       {!profileId() && (
-        <div class="bg-red-900 p-6 text-sm m-4 rounded-md max-w-[800px]">
+        <div class="bg-red-900 p-6 text-sm m-4 rounded-md">
           <div class="font-bold text-white text-md mb-4">No profile selected</div>
           <span class="text-white">
             Make sure the url ends with{" "}
@@ -146,7 +147,7 @@ const App: Component = () => {
         </div>
       )}
       {currentGame.error && profileId() && (
-        <div class="bg-red-900 p-6 text-sm m-4 rounded-md max-w-[800px]">
+        <div class="bg-red-900 p-6 text-sm m-4 rounded-md">
           <div class="font-bold text-white text-md">Error while loading last match</div>
           <span class="text-white">{currentGame.error?.message}</span>
         </div>
@@ -154,35 +155,46 @@ const App: Component = () => {
 
       <div
         class={classes(
-          "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-[800px] text-white inline-flex items-center relative p-1.5",
-          "duration-700 fade-in fade-out",
+          "w-full duration-700 fade-in fade-out",
           theme() == "top" && "slide-in-from-top slide-out-to-top-20",
           visible() ? "animate-in" : "animate-out"
         )}
         onanimationend={(e) => {
           e.target.classList.contains("animate-out") && e.target.classList.add("hidden");
         }}
-        style={themes[theme()]}
       >
-        <div class="basis-1/2 flex flex-col gap-2">
-          <For each={game()?.team}>
-            {(player) => (
-              <Player player={player} civ={player.civilization} align="left" size={teamGame() ? "compact" : null} />
-            )}
-          </For>
+        <div
+          class={classes(
+            "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-full text-white inline-flex items-center relative p-1.5"
+          )}
+          style={themes[theme()]}
+        >
+          <div class="basis-1/2 flex flex-col gap-2">
+            <For each={game()?.team}>
+              {(player) => (
+                <Player player={player} civ={player.civilization} align="left" size={teamGame() ? "compact" : null} />
+              )}
+            </For>
+          </div>
+          <div class="text-center basis-36 flex flex-col self-start	gap-1 px-4 whitespace-nowrap">
+            <p class="text-sm font-bold">{currentGame()?.map}</p>
+            {theme() != "top" && <p class="text-sm uppercase text-white/80">{currentGame()?.kind}</p>}
+          </div>
+          <div class="basis-1/2 flex flex-col gap-2">
+            <For each={game()?.opponents}>
+              {(player) => (
+                <Player player={player} civ={player.civilization} align="right" size={teamGame() ? "compact" : null} />
+              )}
+            </For>
+          </div>
         </div>
-        <div class="text-center basis-36 flex flex-col self-start	gap-1 px-4 whitespace-nowrap">
-          <p class="text-sm font-bold">{currentGame()?.map}</p>
-          {theme() != "top" && <p class="text-sm uppercase text-white/80">{currentGame()?.kind}</p>}
-        </div>
-        <div class="basis-1/2 flex flex-col gap-2">
-          <For each={game()?.opponents}>
-            {(player) => (
-              <Player player={player} civ={player.civilization} align="right" size={teamGame() ? "compact" : null} />
-            )}
-          </For>
-        </div>
+
+        <Trivia game={game()} />
       </div>
+
+      <button onClick={() => toggle(!visible())} class="absolute top-0 right-0 p-2 bg-black text-white text-4xl">
+        {visible() ? "Hide" : "Show"}
+      </button>
     </div>
   );
 };

@@ -12,7 +12,7 @@
 
 
 > **Warning** 
-> This is a beta release and intended for people excited to use and test the overlay while we finilaze the features and iron out any bugs. The url you use to add the overlay source will change in the future and we may make slight changes to the appearance and behavior of the overlay until then.
+> This is a beta release and intended for people excited to use and test the overlay while we finalize the features and iron out any bugs. The url you use to add the overlay source will change in the future and we may make slight changes to the appearance and behavior of the overlay until then.
 > We highly recommend you join our #overlay channel on our [Discord](https://discord.gg/rVgtQ8n6QK) to stay up to date on new releases and changes. It's also a good place to share feedback or get help.
 
 ---
@@ -24,7 +24,7 @@ The overlay is actually a personalized web page that you can include as a browse
 The url for your overlay needs your AoE4 profile ID. Your profile ID is the number in the url of your profile page on aoe4world.com. For example, coRe's profile url is https://aoe4world.com/players/7090781-coRe, so his profile ID is 7090781. 
 
 ### Default url
-To use the overlay in the default setup, replace the numbers in the below url with your profile ID
+To use the overlay in the default setup, replace the numbers in the below url with your profile ID.
 
 ```
 https://overlay-beta.aoe4world.com/?theme=top&includeAlts=true&profileId=1234567
@@ -47,7 +47,7 @@ https://overlay-beta.aoe4world.com/?theme=floating&includeAlts=true&profileId=12
 
 
 ### Add as a browser source
-Once you have the url, you can add it as a browser source in your streaming software, following these guids:
+Once you have the url, you can add it as a browser source in your streaming software, following these guides:
 
 * [OBS](https://obsproject.com/wiki/Sources-Guide#browser-source)
 * [Streamlabs OBS](https://blog.streamlabs.com/introducing-browser-source-interaction-for-streamlabs-obs-d8fc4dcbb1fb)

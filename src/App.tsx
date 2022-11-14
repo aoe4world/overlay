@@ -15,7 +15,7 @@ import { BADGES } from "./assets";
 
 // seconds
 const CONFIG = {
-  HIDE_GAME_AFTER: 20,
+  HIDE_GAME_AFTER: 2000000,
   SYNC_EVERY: 15,
 };
 
@@ -55,7 +55,7 @@ const Player: Component<{
       )}
       <div
         class={classes(
-          "gap-2 justify-between",
+          "gap-2 justify-between overflow-hidden",
           rightAligned() && "text-right",
           compact() && "flex items-center gap-4",
           compact() && rightAligned() && "flex-row-reverse"
@@ -63,7 +63,7 @@ const Player: Component<{
       >
         <h1
           class={classes(
-            "font-bold text-md whitespace-nowrap",
+            "font-bold text-md truncate",
             props.player.result == "loss" && "text-red-500",
             props.player.result == "win" && "text-green-500"
           )}
@@ -165,18 +165,18 @@ const App: Component = () => {
         }}
         style={themes[theme()]}
       >
-        <div class="basis-1/2 flex flex-col gap-2">
+        <div class="basis-1/2 flex flex-col gap-2 min-w-0">
           <For each={game()?.team}>
             {(player) => (
               <Player player={player} civ={player.civilization} align="left" size={teamGame() ? "compact" : null} />
             )}
           </For>
         </div>
-        <div class="text-center basis-36 flex flex-col self-start	gap-1 px-4 whitespace-nowrap">
+        <div class="text-center flex flex-grow flex-col self-start	gap-1 px-4 whitespace-nowrap">
           <p class="text-sm font-bold">{currentGame()?.map}</p>
           {theme() != "top" && <p class="text-sm uppercase text-white/80">{currentGame()?.kind}</p>}
         </div>
-        <div class="basis-1/2 flex flex-col gap-2">
+        <div class="basis-1/2 flex flex-col gap-2 min-w-0">
           <For each={game()?.opponents}>
             {(player) => (
               <Player player={player} civ={player.civilization} align="right" size={teamGame() ? "compact" : null} />

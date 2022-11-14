@@ -10,8 +10,9 @@ import {
   onMount,
   splitProps,
 } from "solid-js";
+import { useParams, useSearchParams } from "@solidjs/router";
 import { Civilization, getLastGame, Player as TeamPlayer } from "./query";
-import { BADGES } from "./assets";
+import { BADGES } from "../assets";
 
 // seconds
 const CONFIG = {
@@ -102,10 +103,11 @@ const Player: Component<{
 
 let sync;
 let scheduledHide;
-const App: Component = () => {
-  const options = new URLSearchParams(window.location.search);
-  const [profileId, setProfileId] = createSignal(options.get("profileId")?.toString()?.split("-")[0]);
-  const [theme, setTheme] = createSignal<"top" | "floating">((options.get("theme") as any) ?? "floating");
+const Overlay: Component = () => {
+  const params = useParams();
+  const [options] = useSearchParams();
+  const [profileId] = createSignal(params.profileId?.split("-")[0]);
+  const [theme] = createSignal<"top" | "floating">((options.theme as any) ?? "floating");
   const [currentGame, { refetch }] = createResource(profileId, getLastGame);
   const [visible, setVisible] = createSignal(!!profileId());
   const game = () => (currentGame.loading ? currentGame.latest : currentGame());
@@ -199,7 +201,7 @@ const themes = {
   `,
 };
 
-export default App;
+export default Overlay;
 
 function classes(...args: any[]) {
   return args.filter(Boolean).join(" ");

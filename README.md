@@ -27,7 +27,7 @@ The url for your overlay needs your AoE4 profile ID. Your profile ID is the numb
 To use the overlay in the default setup, replace the numbers in the below url with your profile ID.
 
 ```
-https://overlay-beta.aoe4world.com/?theme=top&includeAlts=true&profileId=1234567
+https://overlay-beta.aoe4world.com/profile/1234567/?theme=top&includeAlts=true
 ```
 
 > **Note** This url will change once the overlay comes out of beta
@@ -40,7 +40,7 @@ If you want to show the overlay in an arbitrary position, like the  corner of yo
 
 ##### Example
 ```
-https://overlay-beta.aoe4world.com/?theme=floating&includeAlts=true&profileId=1234567
+https://overlay-beta.aoe4world.com/profile/1234567/?theme=floating&includeAlts=true
 ```
 
 <img width="932" alt="Floating Theme" src="https://user-images.githubusercontent.com/6642554/201501063-67a07b01-474b-4460-9efe-5c701b6b436a.png">

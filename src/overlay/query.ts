@@ -1,4 +1,4 @@
-import { FLAGS } from "./assets";
+import { FLAGS } from "../assets";
 
 export type Civilization = {
   name: string;

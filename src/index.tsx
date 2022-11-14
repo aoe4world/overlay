@@ -16,11 +16,11 @@ const App = () => {
     // Beta url detected, redirect to new url
     const profileId = options.get("profileId");
     options.delete("profileId");
-    navigate(`/profile/${profileId}/?${options.toString()}`, { replace: true });
+    navigate(`/profile/${profileId}/bar?${options.toString()}`, { replace: true });
   }
   return (
     <Routes>
-      <Route path="/profile/:profileId" component={Overlay} />
+      <Route path="/profile/:profileId/bar" component={Overlay} />
       <Route path="/" component={Generator} />
     </Routes>
   );

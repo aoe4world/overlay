@@ -15,7 +15,7 @@ import { BADGES } from "./assets";
 
 // seconds
 const CONFIG = {
-  HIDE_GAME_AFTER: 2000000,
+  HIDE_GAME_AFTER: 20,
   SYNC_EVERY: 15,
 };
 

@@ -13,6 +13,7 @@ import {
 import { useParams, useSearchParams } from "@solidjs/router";
 import { Civilization, getLastGame, Player as TeamPlayer } from "./query";
 import { BADGES } from "../assets";
+import { classes } from "../utils";
 
 // seconds
 const CONFIG = {
@@ -202,7 +203,3 @@ const themes = {
 };
 
 export default Overlay;
-
-function classes(...args: any[]) {
-  return args.filter(Boolean).join(" ");
-}

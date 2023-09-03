@@ -65,7 +65,7 @@ const CIVILIZATIONS: Record<string, Civilization> = {
   },
 };
 
-type Modes = "rm_solo" | "rm_team";
+type Modes = "rm_solo" | "rm_team" | "rm_solo_console" | "rm_team_console";
 
 const mapPlayer =
   (leaderboard: string) =>
@@ -79,9 +79,9 @@ const mapPlayer =
         color: "#000000",
         flag: undefined,
       },
-      mode_stats: mode,
+      mode_stats: mode?.games_count ? mode : null,
       rank:
-        leaderboard === "rm_solo" ? `solo_${rank_level}` : leaderboard === "rm_team" ? `team_${rank_level}` : undefined,
+        leaderboard.startsWith("rm_solo") ? `solo_${rank_level}` : leaderboard.startsWith("rm_team") ? `team_${rank_level}` : undefined,
       result: player.result,
     };
   };
@@ -124,7 +124,7 @@ export async function getLastGame(
       id: response.game_id,
       team: team.map(mapPlayer(leaderboard)),
       opponents: opponents.map(mapPlayer(leaderboard)),
-      kind: response.kind.replace("_", " "),
+      kind: response.kind.replace(/_/g, " "),
       duration,
       map,
       ongoing,

@@ -5,13 +5,15 @@ import {
   createResource,
   createSignal,
   For,
+  Match,
   on,
   onCleanup,
   onMount,
   splitProps,
+  Switch,
 } from "solid-js";
 import { useParams, useSearchParams } from "@solidjs/router";
-import { Civilization, getLastGame, Player as TeamPlayer } from "./query";
+import { Civilization, CurrentGame, getLastGame, Player as TeamPlayer } from "./query";
 import { BADGES } from "../assets";
 import { classes } from "../utils";
 
@@ -109,7 +111,14 @@ const Overlay: Component = () => {
   const [options] = useSearchParams();
   const [profileId] = createSignal(params.profileId?.split("-")[0]);
   const [theme] = createSignal<"top" | "floating">((options.theme as any) ?? "floating");
-  const [currentGame, { refetch }] = createResource(profileId, getLastGame);
+  const [currentGame, { refetch }] = createResource(
+    (_, { value, refetching }: { value: CurrentGame; refetching: boolean }) =>
+      getLastGame(
+        profileId(),
+        { api_key: options.apiKey, include_alts: options.includeAlts == "true" },
+        { value, refetching }
+      )
+  );
   const [visible, setVisible] = createSignal(!!profileId());
   const game = () => (currentGame.loading ? currentGame.latest : currentGame());
   const teamGame = () => game()?.team.length > 1 || game()?.opponents.length > 1;
@@ -138,55 +147,65 @@ const Overlay: Component = () => {
 
   return (
     <div class="flex items-center flex-col" style="text-shadow: 0px 1px 0 1px black;">
-      {!profileId() && (
-        <div class="bg-red-900 p-6 text-sm m-4 rounded-md max-w-[800px]">
-          <div class="font-bold text-white text-md mb-4">No profile selected</div>
-          <span class="text-white">
-            Make sure the url ends with{" "}
-            <code class="text-gray-100">
-              ?profileId=<span class="text-blue-300">your profile id</span>
-            </code>
-          </span>
-        </div>
-      )}
-      {currentGame.error && profileId() && (
-        <div class="bg-red-900 p-6 text-sm m-4 rounded-md max-w-[800px]">
-          <div class="font-bold text-white text-md">Error while loading last match</div>
-          <span class="text-white">{currentGame.error?.message}</span>
-        </div>
-      )}
-
-      <div
-        class={classes(
-          "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-[800px] text-white inline-flex items-center relative p-1.5",
-          "duration-700 fade-in fade-out",
-          theme() == "top" && "slide-in-from-top slide-out-to-top-20",
-          visible() ? "animate-in" : "animate-out"
-        )}
-        onanimationend={(e) => {
-          e.target.classList.contains("animate-out") && e.target.classList.add("hidden");
-        }}
-        style={themes[theme()]}
-      >
-        <div class="basis-1/2 flex flex-col gap-2 min-w-0">
-          <For each={game()?.team}>
-            {(player) => (
-              <Player player={player} civ={player.civilization} align="left" size={teamGame() ? "compact" : null} />
+      <Switch>
+        <Match when={!profileId()}>
+          <div class="bg-red-900 p-6 text-sm m-4 rounded-md max-w-[800px]">
+            <div class="font-bold text-white text-md mb-4">No profile selected</div>
+            <span class="text-white">
+              Make sure the url ends with{" "}
+              <code class="text-gray-100">
+                ?profileId=<span class="text-blue-300">your profile id</span>
+              </code>
+            </span>
+          </div>
+        </Match>
+        <Match when={currentGame.error}>
+          <div class="bg-red-900 p-6 text-sm m-4 rounded-md max-w-[800px]">
+            <div class="font-bold text-white text-md">Error while loading last match</div>
+            <span class="text-white">{currentGame.error?.message}</span>
+          </div>
+        </Match>
+        <Match when={currentGame()}>
+          <div
+            class={classes(
+              "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-[800px] text-white inline-flex items-center relative p-1.5",
+              "duration-700 fade-in fade-out",
+              theme() == "top" && "slide-in-from-top slide-out-to-top-20",
+              visible() ? "animate-in" : "animate-out"
             )}
-          </For>
-        </div>
-        <div class="text-center flex flex-grow flex-col self-start	gap-1 px-4 whitespace-nowrap">
-          <p class="text-sm font-bold">{currentGame()?.map}</p>
-          {theme() != "top" && <p class="text-sm uppercase text-white/80">{currentGame()?.kind}</p>}
-        </div>
-        <div class="basis-1/2 flex flex-col gap-2 min-w-0">
-          <For each={game()?.opponents}>
-            {(player) => (
-              <Player player={player} civ={player.civilization} align="right" size={teamGame() ? "compact" : null} />
-            )}
-          </For>
-        </div>
-      </div>
+            onanimationend={(e) => {
+              e.target.classList.contains("animate-out") && e.target.classList.add("hidden");
+            }}
+            style={themes[theme()]}
+          >
+            <div class="basis-1/2 flex flex-col gap-2 min-w-0">
+              <For each={game()?.team}>
+                {(player) => (
+                  <Player player={player} civ={player.civilization} align="left" size={teamGame() ? "compact" : null} />
+                )}
+              </For>
+            </div>
+            <div class="text-center flex flex-grow flex-col self-start	gap-1 px-4 whitespace-nowrap">
+              <p class="text-sm font-bold">{currentGame()?.map}</p>
+              {(theme() != "top" || currentGame()?.kind == "custom") && (
+                <p class="text-sm uppercase text-white/80">{currentGame()?.kind}</p>
+              )}
+            </div>
+            <div class="basis-1/2 flex flex-col gap-2 min-w-0">
+              <For each={game()?.opponents}>
+                {(player) => (
+                  <Player
+                    player={player}
+                    civ={player.civilization}
+                    align="right"
+                    size={teamGame() ? "compact" : null}
+                  />
+                )}
+              </For>
+            </div>
+          </div>
+        </Match>
+      </Switch>
     </div>
   );
 };

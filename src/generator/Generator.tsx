@@ -1,4 +1,15 @@
-import { Component, ComponentProps, createSignal, JSX, ParentComponent, splitProps } from "solid-js";
+import {
+  Component,
+  ComponentProps,
+  createEffect,
+  createResource,
+  createSignal,
+  JSX,
+  Match,
+  ParentComponent,
+  splitProps,
+  Switch,
+} from "solid-js";
 import screenImage from "../assets/images/screen.svg";
 import bannerTopImage from "../assets/images/banner-top.svg";
 import bannerFloatingImage from "../assets/images/banner-floating.svg";
@@ -40,13 +51,47 @@ const StyleOption: ParentComponent<
   );
 };
 
+async function getAuthUser() {
+  try {
+    const req = await fetch("https://aoe4world.com/account/profile_token", {
+      credentials: "include",
+    });
+    const user = await req.json();
+    if (user?.logged_in) return user;
+    else return null;
+  } catch {
+    return null;
+  }
+}
+
 export const Generator = () => {
-  const [player, setPlayer] = createSignal<IPublicPlayersAutocompletePlayerAPI>({ name: "Beastyqt" } as any);
+  const [user, { mutate: setUser }] = createResource(getAuthUser);
+  const [pickedPlayer, setPickedPlayer] = createSignal<IPublicPlayersAutocompletePlayerAPI>(undefined);
   const [style, setStyle] = createSignal<"top" | "floating">("top");
   const [isCopied, setIsCopied] = createSignal(false);
+  const [params, setParams] = createSignal<{ includeAlts: boolean; apiKey: string; profileId: number }>();
   let urlField;
   let timeout;
 
+  createEffect(() => {
+    setParams({
+      includeAlts: true,
+      apiKey: user()?.api_key,
+      profileId: user()?.profile_id ?? pickedPlayer()?.profile_id,
+    });
+  });
+
+  const url = () => {
+    if (pickedPlayer())
+      return `https://${window.location.host}/profile/${
+        pickedPlayer()?.profile_id
+      }/bar?theme=${style()}&includeAlts=true`;
+    else if (user())
+      return `https://${window.location.host}/profile/${
+        user()?.profile_id
+      }/bar?theme=${style()}&includeAlts=true&apiKey=${user()?.api_key}`;
+    else return null;
+  };
   function copy() {
     copyInputText(urlField);
     setIsCopied(true);
@@ -58,17 +103,32 @@ export const Generator = () => {
       <div class="flex flex-col gap-6 max-w-3xl mx-auto">
         <div class="rounded-xl bg-gray-600 p-6 flex flex-col gap-6">
           <Row step={1} label="Select your user profile" description="Search for your in-game name">
-            {player() ? (
-              <div class="my-6 font-bold text-xl flex items-center">
-                {player()?.name}
-                <button onClick={() => setPlayer(undefined)} class="ml-2 text-sm text-gray-300 hover:text-gray-100">
-                  <Icons.X />
-                </button>
-              </div>
-            ) : (
-              <Search class="my-4" onSelect={setPlayer} />
-            )}
+            <Switch fallback={<Search class="my-4" onSelect={setPickedPlayer} />}>
+              <Match when={pickedPlayer()}>
+                <div class="my-6 font-bold text-xl flex items-center">
+                  {pickedPlayer()?.name}
+                  <button
+                    onClick={() => setPickedPlayer(undefined)}
+                    class="ml-2 text-sm text-gray-300 hover:text-gray-100"
+                  >
+                    <Icons.X />
+                  </button>
+                </div>
+              </Match>
+              <Match when={user()}>
+                <div class="my-3 font-bold text-xl flex flex-wrap items-center">
+                  {user()?.name}
+                  <button onClick={() => setUser(undefined)} class="ml-2 text-sm text-gray-300 hover:text-gray-100">
+                    <Icons.X />
+                  </button>
+                </div>
+                <p class="text-gray-100 text-sm">
+                  You are logged in as {user()?.name}, the overlay will now include custom games!
+                </p>
+              </Match>
+            </Switch>
           </Row>
+
           <Row step={2} label="Choose your style" description="Pick the theme and alignment for your overlay">
             <StyleOption
               label="Top"
@@ -92,12 +152,10 @@ export const Generator = () => {
             label="Add as Browser Source"
             description="In your streaming software, add a new Browser Source and paste the URL below"
           >
-            {player() ? (
+            {url() ? (
               <div class="bg-gray-400 rounded-lg  w-full flex gap-2 relative my-4" onClick={(e) => urlField.select()}>
                 <input
-                  value={`https://overlay-beta.aoe4world.com/profile/${
-                    player()?.profile_id ?? "xxxx"
-                  }/?theme=${style()}&includeAlts=true`}
+                  value={url()}
                   class=" outline-none bg-transparent p-2 flex-auto selection:bg-green-800/40 selection:text-green-500"
                   readonly
                   ref={urlField}

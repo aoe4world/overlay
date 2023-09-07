@@ -70,6 +70,7 @@ type Modes = "rm_solo" | "rm_team" | "rm_solo_console" | "rm_team_console";
 const mapPlayer =
   (leaderboard: string) =>
   (player: ApiPlayer): Player => {
+    if (leaderboard == "custom") leaderboard = "rm_solo";
     const mode: ApiMode = player.modes?.[leaderboard];
     const rank_level = mode?.rank_level ?? "unranked";
     return {
@@ -80,8 +81,11 @@ const mapPlayer =
         flag: undefined,
       },
       mode_stats: mode?.games_count ? mode : null,
-      rank:
-        leaderboard.startsWith("rm_solo") ? `solo_${rank_level}` : leaderboard.startsWith("rm_team") ? `team_${rank_level}` : undefined,
+      rank: leaderboard.startsWith("rm_solo")
+        ? `solo_${rank_level}`
+        : leaderboard.startsWith("rm_team")
+        ? `team_${rank_level}`
+        : undefined,
       result: player.result,
     };
   };
@@ -107,12 +111,18 @@ export type CurrentGame = {
 
 export async function getLastGame(
   profile_id: string,
+  params: { include_alts?: boolean; api_key?: string },
   { value, refetching }: { value: CurrentGame; refetching: boolean }
 ): Promise<CurrentGame> {
   try {
     const response: ApiGame = await fetch(
-      `https://aoe4world.com/api/v0/players/${profile_id}/games/last?include_alts=true`
+      `https://aoe4world.com/api/v0/players/${profile_id}/games/last?${new URLSearchParams(
+        Object.entries(params).reduce((acc, [k, v]) => (v ? { ...acc, [k]: v } : acc), {})
+      ).toString()}`
     ).then((r) => r.json());
+
+    if ((response as any).error) throw new Error((response as any).error);
+
     if (refetching && value.id == response.game_id && value.duration == response.duration) return value;
 
     const { map, ongoing, duration, just_finished, teams, leaderboard } = response;

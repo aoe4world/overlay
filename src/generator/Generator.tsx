@@ -101,6 +101,25 @@ export const Generator = () => {
   return (
     <div class="bg-gray-800 min-h-screen m-0 p-6 text-white">
       <div class="flex flex-col gap-6 max-w-3xl mx-auto">
+        <div>
+          <h1 class="font-bold text-2xl my-8">
+            <span class="border-4 border-white rounded-lg px-2 py-1">AoE4 World</span> Overlay
+          </h1>
+          <h2 class="font-bold text-xl max-w-lg text-gray-100 my-4">
+            A tool for streamers to display information about ongoing games in their broadcasts.
+          </h2>
+          <p class="text-lg text-gray-50 leading-snug max-w-xl">
+            Show your rank, rating and that of your opponent to your viewers using the tool build specifically for
+            streamers. Use the below generator to create a url that you can add as a browser source in your streaming
+            software.
+          </p>
+          <a
+            href="https://github.com/aoe4world/overlay"
+            class="text-gray-300 my-6 hover:underline hover:text-white inline-block"
+          >
+            GitHub / Support
+          </a>
+        </div>
         <div class="rounded-xl bg-gray-600 p-6 flex flex-col gap-6">
           <Row step={1} label="Select your user profile" description="Search for your in-game name">
             <Switch fallback={<Search class="my-4" onSelect={setPickedPlayer} />}>

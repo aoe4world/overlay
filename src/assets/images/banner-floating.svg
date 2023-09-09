@@ -1,0 +1,41 @@
+
+<svg width="103px" height="13px" viewBox="0 0 103 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Overlay" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-496.000000, -133.000000)">
+            <g id="Group-2" transform="translate(496.500000, 133.000000)">
+                <rect id="Rectangle" fill="#000000" opacity="0.595424107" x="0" y="0" width="102" height="13" rx="3"></rect>
+                <g id="Group-5" transform="translate(3.000000, 2.500000)">
+                    <text id="Player" font-family="Sen-Regular, Sen" font-size="3" font-weight="normal" fill="#FFFFFF">
+                        <tspan x="16" y="3">Player </tspan>
+                    </text>
+                    <text id="#1-1600-45W-34L-65%" font-family="Sen-Regular, Sen" font-size="2.5" font-weight="normal">
+                        <tspan x="16" y="7" fill="#FFFFFF">#1  1600 </tspan>
+                        <tspan x="26.7910156" y="7" fill="#00C914">45W</tspan>
+                        <tspan x="31.78125" y="7" fill="#FFFFFF">  </tspan>
+                        <tspan x="33.2460938" y="7" fill="#A70000">34L</tspan>
+                        <tspan x="37.484375" y="7" fill="#FFFFFF">  65%</tspan>
+                    </text>
+                    <text id="#2-1600-45W-34L-65%" font-family="Sen-Regular, Sen" font-size="2.5" font-weight="normal">
+                        <tspan x="52.3535156" y="7" fill="#FFFFFF">#2  1600 </tspan>
+                        <tspan x="63.1445312" y="7" fill="#00C914">45W</tspan>
+                        <tspan x="68.1347656" y="7" fill="#FFFFFF">  </tspan>
+                        <tspan x="69.5996094" y="7" fill="#A70000">34L</tspan>
+                        <tspan x="73.8378906" y="7" fill="#FFFFFF">  65%</tspan>
+                    </text>
+                    <text id="Opponent" font-family="Sen-Regular, Sen" font-size="3" font-weight="normal" fill="#FFFFFF">
+                        <tspan x="65.8027344" y="3">Opponent </tspan>
+                    </text>
+                    <g id="Group-4">
+                        <rect id="Rectangle" stroke="#DCDCDC" stroke-width="0.5" fill="#D6E4EF" x="0.25" y="0.25" width="12.5" height="7.5" rx="1"></rect>
+                        <rect id="Rectangle" fill="#B50000" x="6" y="0.5" width="1" height="7"></rect>
+                        <rect id="Rectangle-Copy-6" fill="#B50000" transform="translate(6.500000, 4.000000) rotate(-270.000000) translate(-6.500000, -4.000000) " x="6" y="-2" width="1" height="12"></rect>
+                    </g>
+                    <g id="Group-3" transform="translate(83.000000, 0.000000)">
+                        <rect id="Rectangle-Copy-5" stroke="#07750A" stroke-width="0.5" fill="#0B580D" x="0.25" y="0.25" width="12.5" height="7.5" rx="1"></rect>
+                        <rect id="Rectangle" fill="#032008" x="3" y="0.5" width="1.5" height="7"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,85 @@
+
+<svg width="240px" height="135px" viewBox="0 0 240 135" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="77.5686486%" y1="34.8301765%" x2="27.7045785%" y2="65.8203125%" id="linearGradient-oj699fvuyd-1">
+            <stop stop-color="#6D4627" offset="0%"></stop>
+            <stop stop-color="#CB8A41" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="53.2886412%" cy="87.4156957%" fx="53.2886412%" fy="87.4156957%" r="41.7813291%" gradientTransform="translate(0.532886,0.874157),scale(0.562500,1.000000),rotate(-90.000000),scale(1.000000,1.888477),translate(-0.532886,-0.874157)" id="radialGradient-oj699fvuyd-2">
+            <stop stop-color="#707423" offset="0%"></stop>
+            <stop stop-color="#8FDD17" stop-opacity="0" offset="100%"></stop>
+            <stop stop-color="#8FDD17" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient cx="1.93855348e-14%" cy="39.8637213%" fx="1.93855348e-14%" fy="39.8637213%" r="80.7027432%" gradientTransform="translate(0.000000,0.398637),scale(0.562500,1.000000),rotate(43.867005),translate(-0.000000,-0.398637)" id="radialGradient-oj699fvuyd-3">
+            <stop stop-color="#105F14" offset="0%"></stop>
+            <stop stop-color="#135300" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="90.1008711%" y1="33.7165369%" x2="56.9502168%" y2="69.140796%" id="linearGradient-oj699fvuyd-4">
+            <stop stop-color="#32373E" offset="0%"></stop>
+            <stop stop-color="#000000" stop-opacity="0" offset="98.9838287%"></stop>
+            <stop stop-color="#005C87" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <rect id="path-oj699fvuyd-5" x="0" y="0" width="240" height="135"></rect>
+        <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-oj699fvuyd-6">
+            <stop stop-color="#334054" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#252F3F" stop-opacity="0.509065594" offset="23.5540865%"></stop>
+            <stop stop-color="#181F2B" stop-opacity="0.970738698" offset="83.1117704%"></stop>
+            <stop stop-color="#171E2A" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-oj699fvuyd-7">
+            <stop stop-color="#334054" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#252F3F" stop-opacity="0.509065594" offset="23.5540865%"></stop>
+            <stop stop-color="#181F2B" stop-opacity="0.970738698" offset="83.1117704%"></stop>
+            <stop stop-color="#171E2A" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-oj699fvuyd-8">
+            <stop stop-color="#334054" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#252F3F" stop-opacity="0.509065594" offset="23.5540865%"></stop>
+            <stop stop-color="#181F2B" stop-opacity="0.970738698" offset="83.1117704%"></stop>
+            <stop stop-color="#171E2A" offset="100%"></stop>
+        </linearGradient>
+        <text id="text-oj699fvuyd-9" font-family="Sen-Bold, Sen" font-size="6" font-weight="bold" fill="#FFC664">
+            <tspan x="113.818359" y="16">-IV-</tspan>
+        </text>
+        <filter x="-50.0%" y="-62.5%" width="200.0%" height="275.0%" filterUnits="objectBoundingBox" id="filter-oj699fvuyd-10">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <text id="text-oj699fvuyd-11" font-family="Sen-Regular, Sen" font-size="4" font-weight="normal" fill="#FFFFFF">
+            <tspan x="115.117188" y="23">13:37</tspan>
+        </text>
+        <filter x="-70.0%" y="-83.3%" width="240.0%" height="333.3%" filterUnits="objectBoundingBox" id="filter-oj699fvuyd-12">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Overlay" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-81.000000, -129.000000)">
+            <g id="Group" transform="translate(81.000000, 129.000000)">
+                <g id="Rectangle">
+                    <use fill="url(#linearGradient-oj699fvuyd-1)" xlink:href="#path-oj699fvuyd-5"></use>
+                    <use fill="url(#radialGradient-oj699fvuyd-2)" xlink:href="#path-oj699fvuyd-5"></use>
+                    <use fill="url(#radialGradient-oj699fvuyd-3)" xlink:href="#path-oj699fvuyd-5"></use>
+                    <use fill="url(#linearGradient-oj699fvuyd-4)" xlink:href="#path-oj699fvuyd-5"></use>
+                </g>
+                <rect id="Rectangle" fill="#171E2A" x="3" y="96" width="36.8780488" height="36"></rect>
+                <rect id="Rectangle-Copy" fill="#171E2A" x="41" y="105" width="66.65625" height="27"></rect>
+                <rect id="Rectangle-Copy-2" fill="url(#linearGradient-oj699fvuyd-6)" x="41" y="96" width="55" height="9"></rect>
+                <rect id="Rectangle-Copy-3" fill="url(#linearGradient-oj699fvuyd-7)" x="3" y="3" width="55" height="6"></rect>
+                <rect id="Rectangle-Copy-4" fill="url(#linearGradient-oj699fvuyd-8)" x="3" y="9" width="41" height="11"></rect>
+                <circle id="Oval" fill-opacity="0.308074738" fill="#000000" cx="216" cy="113" r="17"></circle>
+                <polygon id="Rectangle-Copy" fill="#171E2A" transform="translate(215.727922, 112.727922) rotate(-45.000000) translate(-215.727922, -112.727922) " points="202.727922 99.7279221 228.727922 99.7279221 228.727922 125.727922 202.727922 125.727922"></polygon>
+                <g id="-IV-" fill="#FFC664" fill-opacity="1">
+                    <use filter="url(#filter-oj699fvuyd-10)" xlink:href="#text-oj699fvuyd-9"></use>
+                    <use xlink:href="#text-oj699fvuyd-9"></use>
+                </g>
+                <g id="13:37" fill="#FFFFFF" fill-opacity="1">
+                    <use filter="url(#filter-oj699fvuyd-12)" xlink:href="#text-oj699fvuyd-11"></use>
+                    <use xlink:href="#text-oj699fvuyd-11"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

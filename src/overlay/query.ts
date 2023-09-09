@@ -111,19 +111,19 @@ export type CurrentGame = {
 
 export async function getLastGame(
   profile_id: string,
-  params: { include_alts?: boolean; api_key?: string },
+  params: { include_alts?: string; api_key?: string; include_custom?: string },
   { value, refetching }: { value: CurrentGame; refetching: boolean }
 ): Promise<CurrentGame> {
   try {
     const response: ApiGame = await fetch(
-      `https://aoe4world.com/api/v0/players/${profile_id}/games/last?${new URLSearchParams(
-        Object.entries(params).reduce((acc, [k, v]) => (v ? { ...acc, [k]: v } : acc), {})
-      ).toString()}`
+      `https://aoe4world.com/api/v0/players/${profile_id}/games/last?${new URLSearchParams(params).toString()}`
     ).then((r) => r.json());
 
     if ((response as any).error) throw new Error((response as any).error);
 
     if (refetching && value.id == response.game_id && value.duration == response.duration) return value;
+
+    if (response.kind === "custom" && params.include_custom != "true") return value ?? null;
 
     const { map, ongoing, duration, just_finished, teams, leaderboard } = response;
 

@@ -67,29 +67,43 @@ async function getAuthUser() {
 export const Generator = () => {
   const [user, { mutate: setUser }] = createResource(getAuthUser);
   const [pickedPlayer, setPickedPlayer] = createSignal<IPublicPlayersAutocompletePlayerAPI>(undefined);
-  const [style, setStyle] = createSignal<"top" | "floating">("top");
   const [isCopied, setIsCopied] = createSignal(false);
-  const [params, setParams] = createSignal<{ includeAlts: boolean; apiKey: string; profileId: number }>();
+  const [params, setParams] = createSignal<{
+    includeAlts: boolean;
+    apiKey?: string;
+    profileId: number;
+    includeCustom: boolean;
+    theme: "top" | "floating";
+  }>({
+    includeAlts: true,
+    apiKey: undefined,
+    profileId: undefined,
+    includeCustom: true,
+    theme: "top",
+  });
   let urlField;
   let timeout;
 
   createEffect(() => {
-    setParams({
-      includeAlts: true,
+    setParams((x) => ({
+      ...x,
       apiKey: user()?.api_key,
       profileId: user()?.profile_id ?? pickedPlayer()?.profile_id,
-    });
+    }));
   });
 
   const url = () => {
-    if (pickedPlayer())
-      return `https://${window.location.host}/profile/${
-        pickedPlayer()?.profile_id
-      }/bar?theme=${style()}&includeAlts=true`;
-    else if (user())
-      return `https://${window.location.host}/profile/${
-        user()?.profile_id
-      }/bar?theme=${style()}&includeAlts=true&apiKey=${user()?.api_key}`;
+    const urlParams = new URLSearchParams({
+      theme: params()?.theme,
+      includeAlts: params()?.includeAlts.toString(),
+    });
+    if (params().apiKey) {
+      urlParams.set("apiKey", params().apiKey);
+      urlParams.set("includeCustom", params().includeCustom.toString());
+    }
+
+    if (params().profileId)
+      return `https://${window.location.host}/profile/${params().profileId}/bar?${urlParams.toString()}`;
     else return null;
   };
   function copy() {
@@ -101,7 +115,7 @@ export const Generator = () => {
   return (
     <div class="bg-gray-800 min-h-screen m-0 p-6 text-white">
       <div class="flex flex-col gap-6 max-w-3xl mx-auto">
-        <div>
+        <div class="p-6">
           <h1 class="font-bold text-2xl my-8">
             <span class="border-4 border-white rounded-lg px-2 py-1">AoE4 World</span> Overlay
           </h1>
@@ -142,32 +156,66 @@ export const Generator = () => {
                   </button>
                 </div>
                 <p class="text-gray-100 text-sm">
-                  You are logged in as {user()?.name}, the overlay will now include custom games!
+                  You are logged in as {user()?.name}, the overlay can now include custom games!
                 </p>
               </Match>
             </Switch>
+            {user() ? (
+              <></>
+            ) : (
+              <p class="text-sm text-gray-100 max-w-md">
+                Tip: Sign in to{" "}
+                <a href="https://aoe4world.com" target="_blank">
+                  AoE4 World
+                </a>{" "}
+                with your steam account and then refresh this page to get access to custom games.
+              </p>
+            )}
           </Row>
 
           <Row step={2} label="Choose your style" description="Pick the theme and alignment for your overlay">
             <StyleOption
               label="Top"
               description="Centered above the current age"
-              active={style() === "top"}
-              onClick={() => setStyle("top")}
+              active={params().theme === "top"}
+              onClick={() => setParams((x) => ({ ...x, theme: "top" }))}
             >
               <img src={bannerTopImage} class="absolute top-0" />
             </StyleOption>
             <StyleOption
               label="Floating"
               description="Position anywhere on your screen"
-              active={style() === "floating"}
-              onClick={() => setStyle("floating")}
+              active={params().theme === "floating"}
+              onClick={() => setParams((x) => ({ ...x, theme: "floating" }))}
             >
               <img src={bannerFloatingImage} class="absolute top-1.5 right-1.5" />
             </StyleOption>
           </Row>
           <Row
             step={3}
+            label="Choose which games to show"
+            description="Optionally you can choose to limit what games are shown in the overlay."
+          >
+            <label class="block py-2">
+              <input
+                type="checkbox"
+                checked={params()?.includeAlts}
+                onChange={(e) => setParams((x) => ({ ...x, includeAlts: e.currentTarget.checked }))}
+              />
+              <span class="ml-2 text-gray-100">Include games from my alt/smurf accounts (if any).</span>
+            </label>
+            <label class={classes("block py-2", !user() && "line-through")}>
+              <input
+                type="checkbox"
+                checked={params()?.includeCustom}
+                onChange={(e) => setParams((x) => ({ ...x, includeCustom: e.currentTarget.checked }))}
+                disabled={!user()}
+              />
+              <span class={classes("ml-2 text-gray-100", !user() && "opacity-40")}>Include custom games.</span>
+            </label>
+          </Row>
+          <Row
+            step={4}
             label="Add as Browser Source"
             description="In your streaming software, add a new Browser Source and paste the URL below"
           >

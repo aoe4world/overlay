@@ -116,7 +116,9 @@ export async function getLastGame(
 ): Promise<CurrentGame> {
   try {
     const response: ApiGame = await fetch(
-      `https://aoe4world.com/api/v0/players/${profile_id}/games/last?${new URLSearchParams(params).toString()}`
+      `https://aoe4world.com/api/v0/players/${profile_id}/games/last?${new URLSearchParams(
+        Object.entries(params).filter(([k, v]) => v != undefined)
+      ).toString()}`
     ).then((r) => r.json());
 
     if ((response as any).error) throw new Error((response as any).error);

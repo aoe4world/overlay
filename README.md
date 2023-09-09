@@ -1,23 +1,31 @@
 
-# AoE4 World Overlay  <img width="53" alt="image" src="https://user-images.githubusercontent.com/6642554/201519861-dbeb507b-7655-4d59-bf19-a010e5ca3805.png">
+# AoE4 World Overlay
 
 ### A tool for streamers to display information about ongoing games in their broadcasts.
 
 * Supports all all Ranked and Quickmatch modes (1v1, 2v2, etc)
 * Shows players' names, ranking, civ and win rate
 * Includes all new civilizations
+* Optionally supports custom games
 * Ready to use as a browser source in OBS and Streamlabs OBS
+
+Get yours at [overlay.aoe4world.com](https://overlay.aoe4world.com/)
 
 <img width="1005" alt="CleanShot 2022-11-13 at 02 08 30@2x" src="https://user-images.githubusercontent.com/6642554/201501074-ea967231-59cb-44b4-b339-437bf741255c.png">
 
 
-> **Warning** 
-> This is a beta release and intended for people excited to use and test the overlay while we finalize the features and iron out any bugs. The url you use to add the overlay source will change in the future and we may make slight changes to the appearance and behavior of the overlay until then.
+> **Note** 
 > We highly recommend you join our #overlay channel on our [Discord](https://discord.gg/rVgtQ8n6QK) to stay up to date on new releases and changes. It's also a good place to share feedback or get help.
 
 ---
 
 ## Set up
+
+To get the AoE4 World Overlay for your account, follow the steps outline on [overlay.aoe4world.com](https://overlay.aoe4world.com/). 
+
+--- 
+
+## Manual Set up 
 The overlay is actually a personalized web page that you can include as a browser source in your streaming software. First, you will need to create the right url, outlined below, then you can add it as a source.
 
 #### Profile ID
@@ -27,7 +35,7 @@ The url for your overlay needs your AoE4 profile ID. Your profile ID is the numb
 To use the overlay in the default setup, replace the numbers in the below url with your profile ID.
 
 ```
-https://overlay-beta.aoe4world.com/profile/1234567/bar?theme=top&includeAlts=true
+https://overlay.aoe4world.com/profile/1234567/bar?theme=top&includeAlts=true
 ```
 
 > **Note** This url will change once the overlay comes out of beta
@@ -40,7 +48,7 @@ If you want to show the overlay in an arbitrary position, like the  corner of yo
 
 ##### Example
 ```
-https://overlay-beta.aoe4world.com/profile/1234567/bar?theme=floating&includeAlts=true
+https://overlay.aoe4world.com/profile/1234567/bar?theme=floating&includeAlts=true
 ```
 
 <img width="932" alt="Floating Theme" src="https://user-images.githubusercontent.com/6642554/201501063-67a07b01-474b-4460-9efe-5c701b6b436a.png">
@@ -63,6 +71,7 @@ When first loading the overlay, it will always show your current/last game to he
 
 To prevent the overlay from displaying at the start, when you switch to a configured scene, make sure un uncheck the 'Refresh browser when scene becomes active' option in your browser source settings.
 
+---
 
 ## About
 ### Bugs & Support

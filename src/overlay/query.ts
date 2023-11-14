@@ -64,7 +64,7 @@ const CIVILIZATIONS: Record<string, Civilization> = {
   jeanne_darc: {
     name: "Jeanne d'Arc",
     color: "#FFD65C",
-    flag: FLAGS.jd,
+    flag: FLAGS.je,
   },
 
   malians: {

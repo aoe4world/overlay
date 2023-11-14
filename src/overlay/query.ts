@@ -9,20 +9,32 @@ export type Civilization = {
 const CIVILIZATIONS: Record<string, Civilization> = {
   abbasid_dynasty: {
     name: "Abbasid Dynasty",
-    color: "#3B3E41",
+    color: "#5D6063",
     flag: FLAGS.ab,
   },
 
-  delhi_sultanate: {
-    name: "Delhi Sultanate",
-    color: "#29A362",
-    flag: FLAGS.de,
+  ayyubids: {
+    name: "Ayyubids",
+    color: "#C5B537",
+    flag: FLAGS.ay,
+  },
+
+  byzantines: {
+    name: "Byzantines",
+    color: "#8038BE",
+    flag: FLAGS.by,
   },
 
   chinese: {
     name: "Chinese",
-    color: "#DA593B",
+    color: "#E15034",
     flag: FLAGS.ch,
+  },
+
+  delhi_sultanate: {
+    name: "Delhi Sultanate",
+    color: "#00AF63",
+    flag: FLAGS.de,
   },
 
   english: {
@@ -33,14 +45,26 @@ const CIVILIZATIONS: Record<string, Civilization> = {
 
   french: {
     name: "French",
-    color: "#2CA5EA",
+    color: "#0087E7",
     flag: FLAGS.fr,
   },
 
   holy_roman_empire: {
     name: "Holy Roman Empire",
-    color: "#EFDA5C",
+    color: "#FFCB2F",
     flag: FLAGS.hr,
+  },
+
+  japanese: {
+    name: "Japanese",
+    color: "#B8B594",
+    flag: FLAGS.ja,
+  },
+
+  jeanne_darc: {
+    name: "Jeanne d'Arc",
+    color: "#FFD65C",
+    flag: FLAGS.jd,
   },
 
   malians: {
@@ -48,20 +72,35 @@ const CIVILIZATIONS: Record<string, Civilization> = {
     color: "#D61D60",
     flag: FLAGS.ma,
   },
+
   mongols: {
     name: "Mongols",
-    color: "#6EC9FF",
+    color: "#16A8FF",
     flag: FLAGS.mo,
   },
+
+  order_of_the_dragon: {
+    name: "Order of the Dragon",
+    color: "#E0D678",
+    flag: FLAGS.od,
+  },
+
   ottomans: {
     name: "Ottomans",
-    color: "#2F6C4D",
+    color: "#0F6F3E",
     flag: FLAGS.ot,
   },
+
   rus: {
     name: "Rus",
     color: "#F74C43",
     flag: FLAGS.ru,
+  },
+
+  zhu_xis_legacy: {
+    name: "Zhu Xi's Legacy",
+    color: "#00A6A7",
+    flag: FLAGS.zx,
   },
 };
 

@@ -9,6 +9,6 @@ import mo from "./flags/mo.png";
 import ot from "./flags/ot.png";
 import ru from "./flags/ru.png";
 
-export const FLAGS = { ab, ch, de, en, fr, hr, ma, mo, ot, ru };
+export const FLAGS = Object.fromEntries(Object.entries(import.meta.glob('./flags/*.png', { eager: true, as: 'url' })).map(([k, v]) => [k.match(/\.\/flags\/(.*)\.png/)![1], v]));
 
 export const BADGES = import.meta.glob('./badges/s3/*.svg', { eager: true, as: 'url' });

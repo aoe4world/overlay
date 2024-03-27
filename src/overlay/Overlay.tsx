@@ -121,11 +121,22 @@ const Overlay: Component = () => {
   );
   const [visible, setVisible] = createSignal(!!profileId);
   const game = () => (currentGame.loading ? currentGame.latest : currentGame());
-  const is8pFFA = () => game()?.team.length === 1 && game()?.opponents.length === 7;
   const isTeamGame = () => game()?.team.length > 1 || game()?.opponents.length > 1;
-  const leftSide = () => (is8pFFA() ? [...game()?.team, ...game()?.opponents?.slice(0, 3)] : game()?.team);
-  const rightSide = () => (is8pFFA() ? game()?.opponents?.slice(3) : game()?.opponents);
 
+  const sides = () => {
+    if (game()?.teams.length > 2) {
+      const teammates = game()?.team.map((p) => p.id);
+      const opponentTeams = game()?.teams.filter((team) => !team.some((p) => teammates.includes(p.id)));
+      return {
+        left: [...game()?.team, ...opponentTeams.slice(0, opponentTeams.length / 2).flat()],
+        right: [...opponentTeams.slice(opponentTeams.length / 2)].flat(),
+      };
+    }
+    return {
+      left: game()?.team,
+      right: game()?.opponents,
+    };
+  };
   const toggle = (show: boolean) => {
     setVisible(show);
     window.clearTimeout(scheduledHide);
@@ -182,7 +193,7 @@ const Overlay: Component = () => {
             style={themes[theme]}
           >
             <div class="basis-1/2 flex flex-col gap-2 min-w-0">
-              <For each={leftSide()}>
+              <For each={sides().left}>
                 {(player) => (
                   <Player
                     player={player}
@@ -200,7 +211,7 @@ const Overlay: Component = () => {
               )}
             </div>
             <div class="basis-1/2 flex flex-col gap-2 min-w-0">
-              <For each={rightSide()}>
+              <For each={sides().right}>
                 {(player) => (
                   <Player
                     player={player}

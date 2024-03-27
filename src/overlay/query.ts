@@ -113,6 +113,7 @@ const mapPlayer =
     const mode: ApiMode = player.modes?.[leaderboard];
     const rank_level = mode?.rank_level ?? "unranked";
     return {
+      id: player.profile_id,
       name: player.name,
       civilization: CIVILIZATIONS[player.civilization] ?? {
         name: "Unknown Civilization",
@@ -134,6 +135,7 @@ export type Player = {
   civilization: Civilization;
   mode_stats?: ApiMode;
   rank?: string;
+  id: number;
   result?: "win" | "loss";
 };
 
@@ -142,6 +144,7 @@ export type CurrentGame = {
   duration: number;
   team: Player[];
   opponents: Player[];
+  teams: Player[][];
   map: string;
   kind: string;
   ongoing: boolean;
@@ -175,6 +178,7 @@ export async function getLastGame(
       id: response.game_id,
       team: team.map(mapPlayer(leaderboard)),
       opponents: opponents.map(mapPlayer(leaderboard)),
+      teams: teams.map(t => t.map(mapPlayer(leaderboard))),
       kind: response.kind.replace(/_/g, " "),
       duration,
       map,

@@ -121,7 +121,10 @@ const Overlay: Component = () => {
   );
   const [visible, setVisible] = createSignal(!!profileId);
   const game = () => (currentGame.loading ? currentGame.latest : currentGame());
-  const teamGame = () => game()?.team.length > 1 || game()?.opponents.length > 1;
+  const is8pFFA = () => game()?.team.length === 1 && game()?.opponents.length === 7;
+  const isTeamGame = () => game()?.team.length > 1 || game()?.opponents.length > 1;
+  const leftSide = () => (is8pFFA() ? [...game()?.team, ...game()?.opponents?.slice(0, 3)] : game()?.team);
+  const rightSide = () => (is8pFFA() ? game()?.opponents?.slice(3) : game()?.opponents);
 
   const toggle = (show: boolean) => {
     setVisible(show);
@@ -179,26 +182,31 @@ const Overlay: Component = () => {
             style={themes[theme]}
           >
             <div class="basis-1/2 flex flex-col gap-2 min-w-0">
-              <For each={game()?.team}>
+              <For each={leftSide()}>
                 {(player) => (
-                  <Player player={player} civ={player.civilization} align="left" size={teamGame() ? "compact" : null} />
+                  <Player
+                    player={player}
+                    civ={player.civilization}
+                    align="left"
+                    size={isTeamGame() ? "compact" : null}
+                  />
                 )}
               </For>
             </div>
             <div class="text-center flex flex-grow flex-col self-start	gap-1 px-4 whitespace-nowrap">
               <p class="text-sm font-bold">{currentGame()?.map}</p>
-              {(theme != "top" || currentGame()?.kind == "custom") && (
+              {(theme != "top" || !currentGame()?.kind?.includes("1v1")) && (
                 <p class="text-sm uppercase text-white/80">{currentGame()?.kind}</p>
               )}
             </div>
             <div class="basis-1/2 flex flex-col gap-2 min-w-0">
-              <For each={game()?.opponents}>
+              <For each={rightSide()}>
                 {(player) => (
                   <Player
                     player={player}
                     civ={player.civilization}
                     align="right"
-                    size={teamGame() ? "compact" : null}
+                    size={isTeamGame() ? "compact" : null}
                   />
                 )}
               </For>

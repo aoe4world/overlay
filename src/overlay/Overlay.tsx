@@ -19,6 +19,7 @@ import { classes } from "../utils";
 
 // seconds
 const CONFIG = {
+  HIDE_GAME_ON_LOAD: 3,
   HIDE_GAME_AFTER: 20,
   SYNC_EVERY: 15,
 };
@@ -106,11 +107,13 @@ const Player: Component<{
 
 let sync;
 let scheduledHide;
+let lastOngoingGameId;
 const Overlay: Component = () => {
   const params = useParams();
   const [options] = useSearchParams();
   const profileId = params.profileId?.split("-")[0];
   const theme: "top" | "floating" = (options.theme as any) ?? "floating";
+  const hideAfter: number = parseInt(options.hideAfter ?? CONFIG.HIDE_GAME_AFTER.toString());
   const [currentGame, { refetch }] = createResource(
     (_, { value, refetching }: { value: CurrentGame; refetching: boolean }) =>
       getLastGame(
@@ -153,8 +156,10 @@ const Overlay: Component = () => {
 
   createEffect(
     on(game, () => {
-      if (visible() && game()?.ongoing === false)
-        scheduledHide = window.setTimeout(() => toggle(false), 1000 * CONFIG.HIDE_GAME_AFTER);
+      if (game() && game().ongoing)
+        lastOngoingGameId = game().id;
+      if (visible() && game()?.ongoing === false && hideAfter != 0)
+        scheduledHide = window.setTimeout(() => toggle(false), 1000 * (lastOngoingGameId == game().id ? hideAfter : CONFIG.HIDE_GAME_ON_LOAD));
       else if (!visible() && game()?.ongoing) toggle(true);
     })
   );

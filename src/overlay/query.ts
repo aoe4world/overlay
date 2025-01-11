@@ -141,6 +141,8 @@ export type Player = {
 
 export type CurrentGame = {
   id: number;
+  started_at: Date;
+  finished_at?: Date;
   duration: number;
   team: Player[];
   opponents: Player[];
@@ -157,11 +159,9 @@ export async function getLastGame(
   { value, refetching }: { value: CurrentGame; refetching: boolean }
 ): Promise<CurrentGame> {
   try {
-    const response: ApiGame = await fetch(
-      `https://aoe4world.com/api/v0/players/${profile_id}/games/last?${new URLSearchParams(
-        Object.entries(params).filter(([k, v]) => v != undefined)
-      ).toString()}`
-    ).then((r) => r.json());
+    const queryParams = new URLSearchParams(Object.entries(params).filter(([k, v]) => v != undefined)).toString();
+    const url = `https://aoe4world.com/api/v0/players/${profile_id}/games/last?${queryParams}`;
+    const response: ApiGame = await fetch(url).then((r) => r.json());
 
     if ((response as any).error) throw new Error((response as any).error);
 
@@ -169,10 +169,13 @@ export async function getLastGame(
 
     if (response.kind === "custom" && params.include_custom != "true") return value ?? null;
 
-    const { map, ongoing, duration, just_finished, teams, leaderboard } = response;
+    const { map, ongoing, started_at, duration, just_finished, teams, leaderboard } = response;
+    const finished_at = duration ? (Date.parse(started_at) + duration) : null;
 
-    const team =
-      teams.find((team) => team.some((player) => response.filters.profile_ids.includes(player.profile_id))) || [];
+    // Don't show custom games from 5+ minutes ago, coz it might leak unobservable practice games
+    if (response.kind === "custom" && (Date.now() - finished_at.valueOf()) > 300000) return value ?? null;
+
+    const team = teams.find((team) => team.some((player) => response.filters.profile_ids.includes(player.profile_id))) || [];
     const opponents = teams.filter((t) => t !== team).flat();
     return {
       id: response.game_id,
@@ -180,6 +183,8 @@ export async function getLastGame(
       opponents: opponents.map(mapPlayer(leaderboard)),
       teams: teams.map(t => t.map(mapPlayer(leaderboard))),
       kind: response.kind.replace(/_/g, " "),
+      started_at: new Date(started_at),
+      finished_at,
       duration,
       map,
       ongoing,

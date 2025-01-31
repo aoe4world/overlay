@@ -13,7 +13,7 @@ import {
   Switch,
 } from "solid-js";
 import { useParams, useSearchParams } from "@solidjs/router";
-import { Civilization, CurrentGame, getLastGame, Player as TeamPlayer } from "./query";
+import { Civilization, CurrentGame, FetchError, getLastGame, Player as TeamPlayer } from "./query";
 import { BADGES } from "../assets";
 import { classes } from "../utils";
 
@@ -123,7 +123,10 @@ const Overlay: Component = () => {
       )
   );
   const [visible, setVisible] = createSignal(!!profileId);
-  const game = () => (currentGame.loading ? currentGame.latest : currentGame());
+  const game = () => {
+    const result = (currentGame.loading ? currentGame.latest : currentGame());
+    return (!result || result.error) ? null : result as CurrentGame;
+  };
   const isTeamGame = () => game()?.team.length > 1 || game()?.opponents.length > 1;
 
   const sides = () => {
@@ -178,13 +181,13 @@ const Overlay: Component = () => {
             </span>
           </div>
         </Match>
-        <Match when={currentGame.error}>
+        <Match when={currentGame()?.error}>
           <div class="bg-red-900 p-6 text-sm m-4 rounded-md max-w-[800px]">
             <div class="font-bold text-white text-md">Error while loading last match</div>
-            <span class="text-white">{currentGame.error?.message}</span>
+            <span class="text-white">{currentGame().error?.message}</span>
           </div>
         </Match>
-        <Match when={currentGame()}>
+        <Match when={game()}>
           <div
             class={classes(
               "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-[800px] text-white inline-flex items-center relative p-1.5",

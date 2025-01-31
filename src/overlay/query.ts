@@ -151,21 +151,35 @@ export type CurrentGame = {
   kind: string;
   ongoing: boolean;
   recentlyFinished: boolean;
+  error?: Error;
+};
+
+export type FetchError = {
+  error: Error;
 };
 
 export async function getLastGame(
   profile_id: string,
   params: { include_alts?: string; api_key?: string; include_custom?: string },
   { value, refetching }: { value: CurrentGame; refetching: boolean }
-): Promise<CurrentGame> {
+): Promise<CurrentGame | FetchError> {
   try {
     const queryParams = new URLSearchParams(Object.entries(params).filter(([k, v]) => v != undefined)).toString();
     const url = `https://aoe4world.com/api/v0/players/${profile_id}/games/last?${queryParams}`;
-    const response: ApiGame = await fetch(url).then((r) => r.json());
+
+    const apiResponse = await fetch(url);
+
+    if (apiResponse.status != 200)
+      throw new Error("aoe4world.com api temporarily unavailable");
+
+    if (!apiResponse.headers.get('content-type').startsWith('application/json'))
+      throw new Error("aoe4world.com api didn't return a valid json response");
+
+    const response: ApiGame = await apiResponse.json();
 
     if ((response as any).error) throw new Error((response as any).error);
 
-    if (refetching && value.id == response.game_id && value.duration == response.duration) return value;
+    if (value && refetching && value.id == response.game_id && value.duration == response.duration) return value;
 
     if (response.kind === "custom" && params.include_custom != "true") return value ?? null;
 
@@ -191,8 +205,11 @@ export async function getLastGame(
       recentlyFinished: just_finished,
     };
   } catch (e) {
-    if (refetching) return value;
-    else throw e;
+    console.log(e);
+    if (refetching)
+      return value;
+    else
+      return { error: e };
   }
 }
 

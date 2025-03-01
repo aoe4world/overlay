@@ -212,11 +212,18 @@ const Overlay: Component = () => {
                 )}
               </For>
             </div>
-            <div class="text-center flex flex-grow flex-col self-start	gap-1 px-4 whitespace-nowrap">
-              <p class="text-sm font-bold">{currentGame()?.map}</p>
-              {(theme != "top" || !currentGame()?.kind?.includes("1v1")) && (
-                <p class="text-sm uppercase text-white/80">{currentGame()?.kind}</p>
-              )}
+            <div class="self-start min-w-[50px]">
+              <div class="absolute left-0 w-full px-1.5 flex flex-none justify-center">
+                <div class="relative w-fix text-center px-4 flex flex-col gap-1 whitespace-nowrap">
+                  <p class="text-sm font-bold">{game()?.map}</p>
+                  {(theme !== "top" || !game()?.kind?.includes("1v1")) && (
+                    <p class={classes(
+                      "text-sm uppercase text-white/60",
+                      theme === "top" && "mt-[27px]"
+                    )}>{game()?.kind}</p>
+                  )}
+                </div>
+              </div>
             </div>
             <div class="basis-1/2 flex flex-col gap-2 min-w-0">
               <For each={sides().right}>
@@ -239,7 +246,7 @@ const Overlay: Component = () => {
 
 const themes = {
   top: `
-    background-image: radial-gradient(circle at bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 5%, rgba(0,0,0,0.7) 25%, rgba(0,0,0,0.9) 80%);
+    background-image: radial-gradient(circle at center 60px, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 5%, rgba(0,0,0,0.7) 25%, rgba(0,0,0,0.9) 80%);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   `,

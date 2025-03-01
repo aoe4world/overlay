@@ -7,7 +7,7 @@ import {
 export const TwitchPlayer: Component<ComponentProps<"iframe">& { channel: string }> = (props) => {
     return (
       <iframe
-      src={`https://player.twitch.tv/?channel=${props.channel}&parent=${window.location.host}`}
+      src={`https://player.twitch.tv/?channel=${props.channel}&parent=${window.location.hostname}`}
       height="100%"
       width="100%"
       allowfullscreen

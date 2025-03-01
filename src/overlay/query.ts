@@ -184,7 +184,7 @@ export async function getLastGame(
     if (response.kind === "custom" && params.include_custom != "true") return value ?? null;
 
     const { map, ongoing, started_at, duration, just_finished, teams, leaderboard } = response;
-    const finished_at = duration ? (Date.parse(started_at) + duration) : null;
+    const finished_at = duration ? new Date(Date.parse(started_at) + duration * 1000) : null;
 
     // Don't show custom games from 5+ minutes ago, coz it might leak unobservable practice games
     if (response.kind === "custom" && finished_at && (Date.now() - finished_at.valueOf()) > 300000) return value ?? null;

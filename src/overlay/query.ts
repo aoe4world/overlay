@@ -187,7 +187,7 @@ export async function getLastGame(
     const finished_at = duration ? (Date.parse(started_at) + duration) : null;
 
     // Don't show custom games from 5+ minutes ago, coz it might leak unobservable practice games
-    if (response.kind === "custom" && (Date.now() - finished_at.valueOf()) > 300000) return value ?? null;
+    if (response.kind === "custom" && finished_at && (Date.now() - finished_at.valueOf()) > 300000) return value ?? null;
 
     const team = teams.find((team) => team.some((player) => response.filters.profile_ids.includes(player.profile_id))) || [];
     const opponents = teams.filter((t) => t !== team).flat();

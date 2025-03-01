@@ -80,6 +80,7 @@ export const Search: Component<{
                     "px-5 py-2 text-white block text-left w-full odd:bg-gray-800 hover:bg-gray-500",
                     selectedIndex() === index() && "!bg-blue-700 !text-white selected"
                   )}
+                  onMouseDown={(e) => e.preventDefault()}
                   onClick={() => pick(index())}
                 >
                   <div class="font-bold truncate max-w-screen lg:max-w-md">{player.name}</div>

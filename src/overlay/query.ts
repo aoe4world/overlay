@@ -57,7 +57,7 @@ const CIVILIZATIONS: Record<string, Civilization> = {
 
   house_of_lancaster: {
     name: "House of Lancaster",
-    color: "#4566FC",
+    color: "#02197E",
     flag: FLAGS.hl,
   },
 
@@ -75,7 +75,7 @@ const CIVILIZATIONS: Record<string, Civilization> = {
 
   knights_templar: {
     name: "Knights Templar",
-    color: "#CF564C",
+    color: "#140705",
     flag: FLAGS.kt,
   },
 

@@ -55,6 +55,12 @@ const CIVILIZATIONS: Record<string, Civilization> = {
     flag: FLAGS.hr,
   },
 
+  house_of_lancaster: {
+    name: "House of Lancaster",
+    color: "#4566FC",
+    flag: FLAGS.hl,
+  },
+
   japanese: {
     name: "Japanese",
     color: "#B8B594",
@@ -65,6 +71,12 @@ const CIVILIZATIONS: Record<string, Civilization> = {
     name: "Jeanne d'Arc",
     color: "#FFD65C",
     flag: FLAGS.je,
+  },
+
+  knights_templar: {
+    name: "Knights Templar",
+    color: "#CF564C",
+    flag: FLAGS.kt,
   },
 
   malians: {

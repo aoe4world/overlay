@@ -10,109 +10,133 @@ const CIVILIZATIONS: Record<string, Civilization> = {
   abbasid_dynasty: {
     name: "Abbasid Dynasty",
     color: "#5D6063",
-    flag: FLAGS.ab,
+    flag: FLAGS.abbasid,
   },
 
   ayyubids: {
     name: "Ayyubids",
     color: "#C5B537",
-    flag: FLAGS.ay,
+    flag: FLAGS.ayyubids,
   },
 
   byzantines: {
     name: "Byzantines",
     color: "#8038BE",
-    flag: FLAGS.by,
+    flag: FLAGS.byzantines,
   },
 
   chinese: {
     name: "Chinese",
     color: "#E15034",
-    flag: FLAGS.ch,
+    flag: FLAGS.chinese,
   },
 
   delhi_sultanate: {
     name: "Delhi Sultanate",
     color: "#00AF63",
-    flag: FLAGS.de,
+    flag: FLAGS.delhi,
   },
 
   english: {
     name: "English",
     color: "#C3D1DF",
-    flag: FLAGS.en,
+    flag: FLAGS.english,
   },
 
   french: {
     name: "French",
     color: "#0087E7",
-    flag: FLAGS.fr,
+    flag: FLAGS.french,
+  },
+  
+  golden_horde: {
+    name: "Golden Horde",
+    color: "#A60507",
+    flag: FLAGS.goldenhorde,
   },
 
   holy_roman_empire: {
     name: "Holy Roman Empire",
     color: "#FFCB2F",
-    flag: FLAGS.hr,
+    flag: FLAGS.hre,
   },
 
   house_of_lancaster: {
     name: "House of Lancaster",
     color: "#02197E",
-    flag: FLAGS.hl,
+    flag: FLAGS.lancaster,
   },
 
   japanese: {
     name: "Japanese",
     color: "#B8B594",
-    flag: FLAGS.ja,
+    flag: FLAGS.japanese,
   },
 
   jeanne_darc: {
     name: "Jeanne d'Arc",
     color: "#FFD65C",
-    flag: FLAGS.je,
+    flag: FLAGS.jeannedarc,
   },
 
   knights_templar: {
     name: "Knights Templar",
     color: "#140705",
-    flag: FLAGS.kt,
+    flag: FLAGS.templar,
+  },
+
+  macedonian_dynasty: {
+    name: "Macedonian Dynasty",
+    color: "#D4AF37",
+    flag: FLAGS.macedonian,
   },
 
   malians: {
     name: "Malians",
     color: "#D61D60",
-    flag: FLAGS.ma,
+    flag: FLAGS.malians,
   },
 
   mongols: {
     name: "Mongols",
     color: "#16A8FF",
-    flag: FLAGS.mo,
+    flag: FLAGS.mongols,
   },
 
   order_of_the_dragon: {
     name: "Order of the Dragon",
     color: "#E0D678",
-    flag: FLAGS.od,
+    flag: FLAGS.orderofthedragon,
   },
 
   ottomans: {
     name: "Ottomans",
     color: "#0F6F3E",
-    flag: FLAGS.ot,
+    flag: FLAGS.ottomans,
   },
 
   rus: {
     name: "Rus",
     color: "#F74C43",
-    flag: FLAGS.ru,
+    flag: FLAGS.rus,
+  },
+
+  sengoku_daimyo: {
+    name: "Sengoku Daimyo",
+    color: "#E69B00",
+    flag: FLAGS.sengoku,
+  },
+
+  tughlaq_dynasty: {
+    name: "Tughlaq Dynasty",
+    color: "#949494",
+    flag: FLAGS.tughlaq,
   },
 
   zhu_xis_legacy: {
     name: "Zhu Xi's Legacy",
     color: "#00A6A7",
-    flag: FLAGS.zx,
+    flag: FLAGS.zhuxi,
   },
 };
 

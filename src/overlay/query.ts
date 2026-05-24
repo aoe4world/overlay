@@ -79,6 +79,12 @@ const CIVILIZATIONS: Record<string, Civilization> = {
     flag: FLAGS.jeannedarc,
   },
 
+  jin_dynasty: {
+    name: "Jin Dynasty",
+    color: "#D1242E",
+    flag: FLAGS.jin_dynasty,
+  },
+
   knights_templar: {
     name: "Knights Templar",
     color: "#140705",

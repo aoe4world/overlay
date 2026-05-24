@@ -14,7 +14,7 @@ import {
 } from "solid-js";
 import { useParams, useSearchParams } from "@solidjs/router";
 import { Civilization, CurrentGame, FetchError, getLastGame, Player as TeamPlayer } from "./query";
-import { BADGES } from "../assets";
+import { STYLESETS, STYLESET_TYPE } from "../assets";
 import { classes } from "../utils";
 
 // seconds
@@ -36,8 +36,8 @@ const Flag: Component<ComponentProps<"img"> & { civ: Civilization }> = (props) =
   );
 };
 
-const Badge: Component<{ rank: string; class?: string }> = (props) => (
-  <img src={BADGES[`./badges/s3/${props.rank}.svg`]} class={props.class} />
+const Badge: Component<{ rank: string; class?: string, styleset: STYLESET_TYPE }> = (props) => (
+  <img src={STYLESETS[props.styleset].badges[props.rank]} class={props.class} />
 );
 
 const Player: Component<{
@@ -46,6 +46,7 @@ const Player: Component<{
   class?: string;
   align: "left" | "right";
   size?: "compact";
+  styleset: STYLESET_TYPE;
 }> = (props) => {
   const compact = () => props.size === "compact";
   const rightAligned = () => props.align === "right";
@@ -56,7 +57,7 @@ const Player: Component<{
         class={classes("rounded-sm object-cover", compact() ? "h-5 w-9 rounded-xs" : "h-10 w-17 scale-[0.9]")}
       />
       {props.player?.rank && (
-        <Badge rank={props.player.rank} class={classes("rounded-sm scale-[1.2]", compact() ? "h-5" : "h-9")} />
+        <Badge styleset={props.styleset} rank={props.player.rank} class={classes("rounded-sm scale-[1.2]", compact() ? "h-5" : "h-9")} />
       )}
       <div
         class={classes(
@@ -113,6 +114,7 @@ const Overlay: Component = () => {
   const [options] = useSearchParams();
   const profileId = params.profileId?.split("-")[0];
   const theme: "top" | "floating" = (options.theme as any) ?? "floating";
+  const styleset: STYLESET_TYPE = (options.styleset as any) ?? "s3";
   const hideAfter: number = parseInt(options.hideAfter ?? CONFIG.HIDE_GAME_AFTER.toString());
   const [currentGame, { refetch }] = createResource(
     (_, { value, refetching }: { value: CurrentGame; refetching: boolean }) =>
@@ -208,6 +210,7 @@ const Overlay: Component = () => {
                     civ={player.civilization}
                     align="left"
                     size={isTeamGame() ? "compact" : null}
+                    styleset={styleset}
                   />
                 )}
               </For>
@@ -233,6 +236,7 @@ const Overlay: Component = () => {
                     civ={player.civilization}
                     align="right"
                     size={isTeamGame() ? "compact" : null}
+                    styleset={styleset}
                   />
                 )}
               </For>

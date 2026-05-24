@@ -17,6 +17,7 @@ import { classes } from "../utils";
 import { Search } from "./Search";
 import { IPublicPlayersAutocompletePlayerAPI } from "./types";
 import { Icons } from "../assets/icons";
+import { STYLESET_TYPES, STYLESETS } from "../assets";
 
 const Row: ParentComponent<{ step: number; label: string; description: string }> = (props) => (
   <div class="flex items-start gap-4">
@@ -30,7 +31,7 @@ const Row: ParentComponent<{ step: number; label: string; description: string }>
   </div>
 );
 
-const StyleOption: ParentComponent<
+const ThemeOption: ParentComponent<
   { label: string; description: string; active: boolean } & ComponentProps<"button">
 > = (props) => {
   const [local, rest] = splitProps(props, ["label", "description", "children", "active"]);
@@ -47,6 +48,28 @@ const StyleOption: ParentComponent<
         {local.children}
       </div>
       <small class="text-sm text-gray-200">{local.description}</small>
+    </button>
+  );
+};
+
+const StyleSetOption: ParentComponent<
+  { label: string; description?: string; styleset: STYLESET_TYPES; active: boolean } & ComponentProps<"button">
+> = (props) => {
+  const [local, rest] = splitProps(props, ["label", "description", "children", "active","styleset"]);
+  return (
+    <button class="mt-2 mr-4 inline-flex flex-col items-center group " {...rest}>
+      <strong class={classes(local.active ? "text-white" : "text-gray-100/80")}>{local.label}</strong>
+      <div
+        class={classes(
+          "relative my-2 outline-white:outline rounded-md flex flex-row items-center overflow-hidden transition duration-300 group-hover:saturate-100 p-10",
+          local.active ? "outline saturate-100" : "saturate-0"
+        )}
+      >
+        <img src={STYLESETS[local.styleset].badges["solo_gold_1"]} class="h-10" />
+        <img src={STYLESETS[local.styleset].badges["solo_diamond_2"]} class="h-10" />
+        <img src={STYLESETS[local.styleset].badges["solo_conqueror_3"]} class="h-10" />
+      </div>
+      { local.description && <small class="text-sm text-gray-200">{local.description}</small> }
     </button>
   );
 };
@@ -74,12 +97,14 @@ export const Generator = () => {
     profileId: number;
     includeCustom: boolean;
     theme: "top" | "floating";
+    styleset: STYLESET_TYPES;
   }>({
     includeAlts: true,
     apiKey: undefined,
     profileId: undefined,
     includeCustom: true,
     theme: "top",
+    styleset: "s3",
   });
   let urlField;
   let timeout;
@@ -101,6 +126,9 @@ export const Generator = () => {
       urlParams.set("apiKey", params().apiKey);
       urlParams.set("includeCustom", params().includeCustom.toString());
     }
+    
+    if (params().styleset !== "s3")
+      urlParams.set("styleset", params().styleset);
 
     if (params().profileId)
       return `https://${window.location.host}/profile/${params().profileId}/bar?${urlParams.toString()}`;
@@ -173,24 +201,42 @@ export const Generator = () => {
             )}
           </Row>
 
-          <Row step={2} label="Choose your style" description="Pick the theme and alignment for your overlay">
-            <StyleOption
+          <Row step={2} label="Choose your theme" description="Pick the theme and alignment for your overlay">
+            <ThemeOption
               label="Top"
               description="Centered above the current age"
               active={params().theme === "top"}
               onClick={() => setParams((x) => ({ ...x, theme: "top" }))}
             >
               <img src={bannerTopImage} class="absolute top-0" />
-            </StyleOption>
-            <StyleOption
+            </ThemeOption>
+            <ThemeOption
               label="Floating"
               description="Position anywhere on your screen"
               active={params().theme === "floating"}
               onClick={() => setParams((x) => ({ ...x, theme: "floating" }))}
             >
               <img src={bannerFloatingImage} class="absolute top-1.5 right-1.5" />
-            </StyleOption>
+            </ThemeOption>
           </Row>
+
+          <Row step={3} label="Choose your style" description="Pick the style of the badges">
+            <StyleSetOption
+              label="Stylized Badges (Default)"
+              styleset="s3"
+              active={params().styleset === "s3"}
+              onClick={() => setParams((x) => ({ ...x, styleset: "s3" }))}
+            >
+            </StyleSetOption>
+            <StyleSetOption
+              label="Ingame Badges"
+              styleset="s3_ingame"
+              active={params().styleset === "s3_ingame"}
+              onClick={() => setParams((x) => ({ ...x, styleset: "s3_ingame" }))}
+            >
+            </StyleSetOption>
+          </Row>
+
           <Row
             step={3}
             label="Choose which games to show"

@@ -162,6 +162,7 @@ const mapPlayer =
         color: "#000000",
         flag: undefined,
       },
+      civilization_randomized: player.civilization_randomized,
       mode_stats: mode?.games_count ? mode : null,
       rank: leaderboard.startsWith("rm_solo")
         ? `solo_${rank_level}`
@@ -175,6 +176,7 @@ const mapPlayer =
 export type Player = {
   name: string;
   civilization: Civilization;
+  civilization_randomized: boolean;
   mode_stats?: ApiMode;
   rank?: string;
   id: number;
@@ -274,6 +276,7 @@ interface ApiGame {
 
 interface ApiPlayer {
   civilization: string;
+  civilization_randomized: boolean;
   result?: any;
   name: string;
   profile_id: number;

@@ -13,8 +13,8 @@ import {
   Switch,
 } from "solid-js";
 import { useParams, useSearchParams } from "@solidjs/router";
-import { Civilization, CurrentGame, FetchError, getLastGame, Player as TeamPlayer } from "./query";
-import { STYLESETS, STYLESET_TYPES } from "../assets";
+import { Civilization, CurrentGame, getLastGame, Player as TeamPlayer } from "./query";
+import { FLAGS, STYLESET_TYPES, STYLESETS } from "../assets";
 import { classes } from "../utils";
 
 // seconds
@@ -52,10 +52,23 @@ const Player: Component<{
   const rightAligned = () => props.align === "right";
   return (
     <div class={classes("flex items-center gap-3", rightAligned() && "flex-row-reverse")}>
-      <Flag
-        civ={props.civ}
-        class={classes("rounded-sm object-cover", compact() ? "h-5 w-9 rounded-xs" : "h-10 w-17 scale-[0.9]")}
-      />
+      <div class={"relative"}>
+        <Flag
+            civ={props.civ}
+            class={classes("rounded-sm object-cover", compact() ? "h-5 w-9 rounded-xs" : "h-10 w-17 scale-[0.9]")}
+        />
+        {props.player.civilization_randomized && (
+          <Flag
+          civ={{
+            name: "Random Civilization",
+            color: "#000000",
+            flag: FLAGS.unknown,
+          }}
+          class={classes("absolute -bottom-1 -right-1 rounded border border-1 border-gray-700",
+              compact() ? "h-4 w-6 scale-[0.9] rounded-xs" : "h-6 w-10 scale-[0.9]")}
+          />
+        )}
+      </div>
       {props.player?.rank && (
         <Badge styleset={props.styleset} rank={props.player.rank} class={classes("rounded-sm scale-[1.2]", compact() ? "h-5" : "h-9")} />
       )}

@@ -6,11 +6,23 @@ export type Civilization = {
   color: string;
 };
 
+export const UNKNOWN_CIVILIZATION: Civilization = {
+  name: "Unknown Civilization",
+  color: "#000000",
+  flag: FLAGS.unknown,
+};
+
+export const RANDOM_CIVILIZATION: Civilization = {
+  name: "Random Civilization",
+  color: "#000000",
+  flag: FLAGS.random,
+};
+
 const CIVILIZATIONS: Record<string, Civilization> = {
   abbasid_dynasty: {
     name: "Abbasid Dynasty",
     color: "#5D6063",
-    flag: FLAGS.abbasid,
+    flag: FLAGS.abbasid_dynasty,
   },
 
   ayyubids: {
@@ -34,7 +46,7 @@ const CIVILIZATIONS: Record<string, Civilization> = {
   delhi_sultanate: {
     name: "Delhi Sultanate",
     color: "#00AF63",
-    flag: FLAGS.delhi,
+    flag: FLAGS.delhi_sultanate,
   },
 
   english: {
@@ -52,19 +64,19 @@ const CIVILIZATIONS: Record<string, Civilization> = {
   golden_horde: {
     name: "Golden Horde",
     color: "#A60507",
-    flag: FLAGS.goldenhorde,
+    flag: FLAGS.golden_horde,
   },
 
   holy_roman_empire: {
     name: "Holy Roman Empire",
     color: "#FFCB2F",
-    flag: FLAGS.hre,
+    flag: FLAGS.holy_roman_empire,
   },
 
   house_of_lancaster: {
     name: "House of Lancaster",
     color: "#02197E",
-    flag: FLAGS.lancaster,
+    flag: FLAGS.house_of_lancaster,
   },
 
   japanese: {
@@ -76,7 +88,7 @@ const CIVILIZATIONS: Record<string, Civilization> = {
   jeanne_darc: {
     name: "Jeanne d'Arc",
     color: "#FFD65C",
-    flag: FLAGS.jeannedarc,
+    flag: FLAGS.jeanne_darc,
   },
 
   jin_dynasty: {
@@ -88,13 +100,13 @@ const CIVILIZATIONS: Record<string, Civilization> = {
   knights_templar: {
     name: "Knights Templar",
     color: "#140705",
-    flag: FLAGS.templar,
+    flag: FLAGS.knights_templar,
   },
 
   macedonian_dynasty: {
     name: "Macedonian Dynasty",
     color: "#D4AF37",
-    flag: FLAGS.macedonian,
+    flag: FLAGS.macedonian_dynasty,
   },
 
   malians: {
@@ -112,7 +124,7 @@ const CIVILIZATIONS: Record<string, Civilization> = {
   order_of_the_dragon: {
     name: "Order of the Dragon",
     color: "#E0D678",
-    flag: FLAGS.orderofthedragon,
+    flag: FLAGS.order_of_the_dragon,
   },
 
   ottomans: {
@@ -130,19 +142,19 @@ const CIVILIZATIONS: Record<string, Civilization> = {
   sengoku_daimyo: {
     name: "Sengoku Daimyo",
     color: "#E69B00",
-    flag: FLAGS.sengoku,
+    flag: FLAGS.sengoku_daimyo,
   },
 
   tughlaq_dynasty: {
     name: "Tughlaq Dynasty",
     color: "#949494",
-    flag: FLAGS.tughlaq,
+    flag: FLAGS.tughlaq_dynasty,
   },
 
   zhu_xis_legacy: {
     name: "Zhu Xi's Legacy",
     color: "#00A6A7",
-    flag: FLAGS.zhuxi,
+    flag: FLAGS.zhu_xis_legacy,
   },
 };
 
@@ -157,11 +169,7 @@ const mapPlayer =
     return {
       id: player.profile_id,
       name: player.name,
-      civilization: CIVILIZATIONS[player.civilization] ?? {
-        name: "Unknown Civilization",
-        color: "#000000",
-        flag: undefined,
-      },
+      civilization: CIVILIZATIONS[player.civilization] ?? UNKNOWN_CIVILIZATION,
       civilization_randomized: player.civilization_randomized,
       mode_stats: mode?.games_count ? mode : null,
       rank: leaderboard.startsWith("rm_solo")

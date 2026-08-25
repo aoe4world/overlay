@@ -13,8 +13,8 @@ import {
   Switch,
 } from "solid-js";
 import { useParams, useSearchParams } from "@solidjs/router";
-import { Civilization, CurrentGame, getLastGame, Player as TeamPlayer } from "./query";
-import { FLAGS, STYLESET_TYPES, STYLESETS } from "../assets";
+import { Civilization, CurrentGame, getLastGame, Player as TeamPlayer, RANDOM_CIVILIZATION } from "./query";
+import { STYLESET_TYPES, STYLESETS } from "../assets";
 import { classes } from "../utils";
 
 // seconds
@@ -55,17 +55,13 @@ const Player: Component<{
       <div class={"relative"}>
         <Flag
             civ={props.civ}
-            class={classes("rounded-sm object-cover", compact() ? "h-5 w-9 rounded-xs" : "h-10 w-17 scale-[0.9]")}
+            class={classes("rounded-sm object-cover", compact() ? "h-5 rounded-xs" : "h-10 scale-[0.9]")}
         />
         {props.player.civilization_randomized && (
           <Flag
-          civ={{
-            name: "Random Civilization",
-            color: "#000000",
-            flag: FLAGS.unknown,
-          }}
-          class={classes("absolute -bottom-1 -right-1 rounded border border-1 border-gray-700",
-              compact() ? "h-4 w-6 scale-[0.9] rounded-xs" : "h-6 w-10 scale-[0.9]")}
+            civ={RANDOM_CIVILIZATION}
+            class={classes("absolute -bottom-1 -right-1 rounded-sm",
+                compact() ? "w-6 rounded-xs outline-1" : "w-10 outline-[1.5px]")}
           />
         )}
       </div>

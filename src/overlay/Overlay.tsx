@@ -14,7 +14,7 @@ import {
 } from "solid-js";
 import { useParams, useSearchParams } from "@solidjs/router";
 import { Civilization, CurrentGame, FetchError, getLastGame, Player as TeamPlayer } from "./query";
-import { STYLESETS, STYLESET_TYPE } from "../assets";
+import { STYLESETS, STYLESET_TYPES } from "../assets";
 import { classes } from "../utils";
 
 // seconds
@@ -36,7 +36,7 @@ const Flag: Component<ComponentProps<"img"> & { civ: Civilization }> = (props) =
   );
 };
 
-const Badge: Component<{ rank: string; class?: string, styleset: STYLESET_TYPE }> = (props) => (
+const Badge: Component<{ rank: string; class?: string, styleset: STYLESET_TYPES }> = (props) => (
   <img src={STYLESETS[props.styleset].badges[props.rank]} class={props.class} />
 );
 
@@ -46,7 +46,7 @@ const Player: Component<{
   class?: string;
   align: "left" | "right";
   size?: "compact";
-  styleset: STYLESET_TYPE;
+  styleset: STYLESET_TYPES;
 }> = (props) => {
   const compact = () => props.size === "compact";
   const rightAligned = () => props.align === "right";
@@ -114,7 +114,7 @@ const Overlay: Component = () => {
   const [options] = useSearchParams();
   const profileId = params.profileId?.split("-")[0];
   const theme: "top" | "floating" = (options.theme as any) ?? "floating";
-  const styleset: STYLESET_TYPE = (options.styleset as any) ?? "s3";
+  const styleset: STYLESET_TYPES = (options.styleset as any) ?? "s3";
   const hideAfter: number = parseInt(options.hideAfter ?? CONFIG.HIDE_GAME_AFTER.toString());
   const [currentGame, { refetch }] = createResource(
     (_, { value, refetching }: { value: CurrentGame; refetching: boolean }) =>

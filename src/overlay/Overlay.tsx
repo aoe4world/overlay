@@ -13,8 +13,8 @@ import {
   Switch,
 } from "solid-js";
 import { useParams, useSearchParams } from "@solidjs/router";
-import { Civilization, CurrentGame, FetchError, getLastGame, Player as TeamPlayer } from "./query";
-import { STYLESETS, STYLESET_TYPE } from "../assets";
+import { Civilization, CurrentGame, getLastGame, Player as TeamPlayer, RANDOM_CIVILIZATION } from "./query";
+import { STYLESET_TYPES, STYLESETS } from "../assets";
 import { classes } from "../utils";
 
 // seconds
@@ -36,7 +36,7 @@ const Flag: Component<ComponentProps<"img"> & { civ: Civilization }> = (props) =
   );
 };
 
-const Badge: Component<{ rank: string; class?: string, styleset: STYLESET_TYPE }> = (props) => (
+const Badge: Component<{ rank: string; class?: string, styleset: STYLESET_TYPES }> = (props) => (
   <img src={STYLESETS[props.styleset].badges[props.rank]} class={props.class} />
 );
 
@@ -46,16 +46,25 @@ const Player: Component<{
   class?: string;
   align: "left" | "right";
   size?: "compact";
-  styleset: STYLESET_TYPE;
+  styleset: STYLESET_TYPES;
 }> = (props) => {
   const compact = () => props.size === "compact";
   const rightAligned = () => props.align === "right";
   return (
     <div class={classes("flex items-center gap-3", rightAligned() && "flex-row-reverse")}>
-      <Flag
-        civ={props.civ}
-        class={classes("rounded-sm object-cover", compact() ? "h-5 w-9 rounded-xs" : "h-10 w-17 scale-[0.9]")}
-      />
+      <div class={"relative"}>
+        <Flag
+            civ={props.civ}
+            class={classes("rounded-sm object-cover", compact() ? "h-5 rounded-xs" : "h-10 scale-[0.9]")}
+        />
+        {props.player.civilization_randomized && (
+          <Flag
+            civ={RANDOM_CIVILIZATION}
+            class={classes("absolute -bottom-1 -right-1 rounded-sm",
+                compact() ? "w-6 rounded-xs outline-1" : "w-10 outline-[1.5px]")}
+          />
+        )}
+      </div>
       {props.player?.rank && (
         <Badge styleset={props.styleset} rank={props.player.rank} class={classes("rounded-sm scale-[1.2]", compact() ? "h-5" : "h-9")} />
       )}
@@ -114,7 +123,7 @@ const Overlay: Component = () => {
   const [options] = useSearchParams();
   const profileId = params.profileId?.split("-")[0];
   const theme: "top" | "floating" = (options.theme as any) ?? "floating";
-  const styleset: STYLESET_TYPE = (options.styleset as any) ?? "s3";
+  const styleset: STYLESET_TYPES = (options.styleset as any) ?? "s3";
   const hideAfter: number = parseInt(options.hideAfter ?? CONFIG.HIDE_GAME_AFTER.toString());
   const [currentGame, { refetch }] = createResource(
     (_, { value, refetching }: { value: CurrentGame; refetching: boolean }) =>

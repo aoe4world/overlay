@@ -145,10 +145,22 @@ const CIVILIZATIONS: Record<string, Civilization> = {
     flag: FLAGS.sengoku_daimyo,
   },
 
+  scots: {
+    name: "Scots",
+    color: "#6185CD",
+    flag: FLAGS.scots,
+  },
+
   tughlaq_dynasty: {
     name: "Tughlaq Dynasty",
     color: "#949494",
     flag: FLAGS.tughlaq_dynasty,
+  },
+
+  vikings: {
+    name: "Vikings",
+    color: "#AE4547",
+    flag: FLAGS.vikings,
   },
 
   zhu_xis_legacy: {

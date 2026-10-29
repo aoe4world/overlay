@@ -1,5 +1,3 @@
-import type { StringChain } from "lodash";
-
 export interface ILeaderboardsMap {
   [key: string]: ILeaderboard;
 }

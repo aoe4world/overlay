@@ -30,7 +30,7 @@ const Flag: Component<ComponentProps<"img"> & { civ: Civilization }> = (props) =
     <img
       src={local.civ.flag}
       style={{ "outline-color": local.civ.color }}
-      class={classes(local.class, "outline outline-1")}
+      class={classes(local.class, "outline-solid outline-1")}
       {...rest}
     />
   );
@@ -55,18 +55,18 @@ const Player: Component<{
       <div class={"relative"}>
         <Flag
             civ={props.civ}
-            class={classes("rounded-sm object-cover", compact() ? "h-5 rounded-xs" : "h-10 scale-[0.9]")}
+            class={classes("rounded-xs object-cover", compact() ? "h-5 rounded-xs" : "h-10 scale-[0.9]")}
         />
         {props.player.civilization_randomized && (
           <Flag
             civ={RANDOM_CIVILIZATION}
-            class={classes("absolute -bottom-1 -right-1 rounded-sm",
+            class={classes("absolute -bottom-1 -right-1 rounded-xs",
                 compact() ? "w-6 rounded-xs outline-1" : "w-10 outline-[1.5px]")}
           />
         )}
       </div>
       {props.player?.rank && (
-        <Badge styleset={props.styleset} rank={props.player.rank} class={classes("rounded-sm scale-[1.2]", compact() ? "h-5" : "h-9")} />
+        <Badge styleset={props.styleset} rank={props.player.rank} class={classes("rounded-xs scale-[1.2]", compact() ? "h-5" : "h-9")} />
       )}
       <div
         class={classes(
@@ -120,7 +120,14 @@ let scheduledHide;
 let lastOngoingGameId;
 const Overlay: Component = () => {
   const params = useParams();
-  const [options] = useSearchParams();
+  const [options] = useSearchParams<{
+    theme?: string;
+    styleset?: string;
+    hideAfter?: string;
+    apiKey?: string;
+    includeAlts?: string;
+    includeCustom?: string;
+  }>();
   const profileId = params.profileId?.split("-")[0];
   const theme: "top" | "floating" = (options.theme as any) ?? "floating";
   const styleset: STYLESET_TYPES = (options.styleset as any) ?? "s3";
@@ -201,7 +208,7 @@ const Overlay: Component = () => {
         <Match when={game()}>
           <div
             class={classes(
-              "from-black/90 via-black/70 to-black/90 bg-gradient-to-r rounded-md mt-0 w-[800px] text-white inline-flex items-center relative p-1.5",
+              "from-black/90 via-black/70 to-black/90 bg-linear-to-r rounded-md mt-0 w-[800px] text-white inline-flex items-center relative p-1.5",
               "duration-700 fade-in fade-out",
               theme == "top" && "slide-in-from-top slide-out-to-top-20",
               visible() ? "animate-in" : "animate-out"

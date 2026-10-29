@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite';
-import { VitePWA } from 'vite-plugin-pwa'
+import tailwindcss from '@tailwindcss/vite';
+import { VitePWA } from 'vite-plugin-pwa';
 import solidPlugin from 'vite-plugin-solid';
 
 export default defineConfig({
   plugins: [
     solidPlugin(),
+    tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {

@@ -41,7 +41,7 @@ const ThemeOption: ParentComponent<
       <div
         class={classes(
           "relative my-2 outline-white:outline rounded-md flex flex-col items-center overflow-hidden transition duration-300 group-hover:saturate-100",
-          local.active ? "outline saturate-100" : "saturate-0"
+          local.active ? "outline-solid saturate-100" : "saturate-0"
         )}
       >
         <img src={screenImage} />
@@ -62,7 +62,7 @@ const StyleSetOption: ParentComponent<
       <div
         class={classes(
           "relative my-2 outline-white:outline rounded-md flex flex-row items-center overflow-hidden transition duration-300 group-hover:saturate-100 p-10",
-          local.active ? "outline saturate-100" : "saturate-0"
+          local.active ? "outline-solid saturate-100" : "saturate-0"
         )}
       >
         <img src={STYLESETS[local.styleset].badges["solo_gold_1"]} class="h-10" />
@@ -269,7 +269,7 @@ export const Generator = () => {
               <div class="bg-gray-400 rounded-lg  w-full flex gap-2 relative my-4" onClick={(e) => urlField.select()}>
                 <input
                   value={url()}
-                  class=" outline-none bg-transparent p-2 flex-auto selection:bg-green-800/40 selection:text-green-500"
+                  class=" outline-hidden bg-transparent p-2 flex-auto selection:bg-green-800/40 selection:text-green-500"
                   readonly
                   ref={urlField}
                 />
@@ -280,7 +280,7 @@ export const Generator = () => {
                   Url copied to clipboard!
                 </div>
                 <button
-                  class={classes("z-10  p-1 rounded w-8 m-2", !isCopied() && "hover:bg-gray-500")}
+                  class={classes("z-10  p-1 rounded-sm w-8 m-2", !isCopied() && "hover:bg-gray-500")}
                   onClick={() => copy()}
                 >
                   {isCopied() ? (

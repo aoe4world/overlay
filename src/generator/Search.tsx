@@ -68,7 +68,7 @@ export const Search: Component<{
         value={query()}
         onKeyDown={handleKeydown}
         placeholder="Search players..."
-        class="block w-full bg-gray-200 transition pl-12 focus:bg-white text-black px-6 py-3 placeholder-gray-900 rounded-lg focus:outline-none"
+        class="block w-full bg-gray-200 transition pl-12 focus:bg-white text-black px-6 py-3 placeholder-gray-900 rounded-lg focus:outline-hidden"
       />
       {isOpen() && (
         <div class="absolute mt-2 bg-gray-700 border-2 border-white/20 rounded-xl z-10 max-h-[60vh] w-full right-0 overflow-hidden">
@@ -78,7 +78,7 @@ export const Search: Component<{
                 <button
                   class={classes(
                     "px-5 py-2 text-white block text-left w-full odd:bg-gray-800 hover:bg-gray-500",
-                    selectedIndex() === index() && "!bg-blue-700 !text-white selected"
+                    selectedIndex() === index() && "bg-blue-700! text-white! selected"
                   )}
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => pick(index())}

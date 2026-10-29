@@ -1,0 +1,5 @@
+# Cloudflare Pages project config. Build command (`npm run build`) stays in the dashboard;
+# Node is pinned via .node-version and npm is selected via package-lock.json.
+name = "overlay"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-10-29"

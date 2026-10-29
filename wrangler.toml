@@ -1,5 +1,5 @@
-# Cloudflare Pages project config. Build command (`npm run build`) stays in the dashboard;
-# Node is pinned via .node-version and npm is selected via package-lock.json.
+# Cloudflare Pages project config. The build command (`pnpm run build`) can only be set in the dashboard.
+# Node is pinned via .node-version; pnpm is selected via pnpm-lock.yaml and its version via package.json "packageManager".
 name = "overlay"
 pages_build_output_dir = "dist"
 compatibility_date = "2026-10-29"

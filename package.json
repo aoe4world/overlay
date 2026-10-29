@@ -27,5 +27,8 @@
   },
   "prettier": {
     "printWidth": 120
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
   }
 }

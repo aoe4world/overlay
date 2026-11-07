@@ -214,7 +214,9 @@ const Overlay: Component = () => {
               visible() ? "animate-in" : "animate-out"
             )}
             onanimationend={(e) => {
-              e.target.classList.contains("animate-out") && e.target.classList.add("hidden");
+              // Swap rather than add: in Tailwind v4 `inline-flex` is emitted after `hidden` and would win.
+              // The reactive class binding restores `inline-flex` when the overlay becomes visible again.
+              e.target.classList.contains("animate-out") && e.target.classList.replace("inline-flex", "hidden");
             }}
             style={themes[theme]}
           >
